@@ -40,6 +40,13 @@
 
     <div class="container">
       <div class="starter-template">
+        <dl>
+          <dt>Included Libraries</dt>
+          <dd><a href="http://getbootstrap.com/">Bootstrap</a> 3.0.3</dd>
+          <dd><a href="http://jquery.com/"> jQuery</a> 1.10.2</dd>
+          <dt>Development Tools</dt>
+          <dd><a href="https://github.com/spinnytea/jsGameEngine">GitHub</a></dd>
+        </dl>
       </div>
 
     </div><!-- /.container -->
@@ -50,5 +57,9 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="resources/jquery.min.js"></script>
     <script src="resources/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+      // all the external links should open in a new tab
+      $('a[href^="http"]').attr('target', '_blank');
+    </script>
   </body>
 </html>
