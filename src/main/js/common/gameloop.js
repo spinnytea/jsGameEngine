@@ -21,7 +21,6 @@ function realtimeGameLoop(updateStep, drawStep, stepDuration) {
 	} else {
 		// calculate the ellapsed time
 		var ellapsed = currTime - realtimeGameLoop_previousCall;
-		console.log(ellapsed);
 		
 		// run the update step as many times as needed
 		while(ellapsed >= stepDuration) {
