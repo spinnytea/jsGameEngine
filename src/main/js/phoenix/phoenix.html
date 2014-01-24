@@ -8,13 +8,14 @@
     <!-- TODO favicon -->
     <!-- link rel="shortcut icon" href="../../docs-assets/ico/favicon.png" -->
 
-    <title>JavaScript Game Demos</title>
+    <title>Phoenix</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="resources/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="../resources/bootstrap/css/bootstrap.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="index.css" rel="stylesheet">
+    <link href="../index.css" rel="stylesheet">
+    <link href="phoenix.css" rel="stylesheet">
   </head>
 
   <body>
@@ -31,36 +32,30 @@
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="phoenix/phoenix.html">Phoenix</a></li>
-            <li class="active"><a href="#">Credits</a></li>
+            <li><a href="../index.html">Home</a></li>
+            <li class="active"><a href="#">Phoenix</a></li>
+            <li><a href="../credits.html">Credits</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
     </div>
 
-    <div class="container">
-      <div class="starter-template">
-        <dl>
-          <dt>Included Libraries</dt>
-          <dd><a href="http://getbootstrap.com/">Bootstrap</a> 3.0.3</dd>
-          <dd><a href="http://jquery.com/"> jQuery</a> 1.10.2</dd>
-          <dt>Development Tools</dt>
-          <dd><a href="https://github.com/spinnytea/jsGameEngine">GitHub</a></dd>
-        </dl>
-      </div>
-
-    </div><!-- /.container -->
+    <div class="container"><h1>&nbsp;</h1><div id="game_window"> <!-- This ID game_window is used by multiple js files -->
+    </div></div><!-- /.container -->
 
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="resources/jquery.min.js"></script>
-    <script src="resources/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../resources/jquery.min.js"></script>
+    <script src="../resources/bootstrap/js/bootstrap.min.js"></script>
+    
+    <script src="../common/gameloop.js"></script>
     <script type="text/javascript">
-      // all the external links should open in a new tab
-      $('a[href^="http"]').attr('target', '_blank');
+    	// some intial variables to be set before loading other things
+        $game_window = $('#game_window');
     </script>
+    <script src="player.js"></script>
+    <script src="phoenix.js"></script>
   </body>
 </html>
