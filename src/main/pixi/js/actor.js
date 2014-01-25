@@ -77,6 +77,7 @@ function createAgent(stage, xpos) {
 	agent.inventory = [ null, null, null ];
 	for(i in agent.inventory) {
 		var slot = new PIXI.Sprite(getTexture("inventoryslot"));
+		slot.width = slot.height = 40;
 		slot.position.x = slot.width * (i * 1.5 + 0.5);
 		slot.position.y = WORLD.HEIGHT - slot.height * 1.5;
 		stage.addChild(slot);

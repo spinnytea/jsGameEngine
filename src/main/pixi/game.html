@@ -144,7 +144,8 @@ body {
 		    WORLD.AGENT.update();
 		    grayFilter.gray = 1 - WORLD.AGENT.state.mood;
 		    for(i in onScreenObjects)
-		    	onScreenObjects[i].update();
+		    	if(onScreenObjects[i].update)
+			    	onScreenObjects[i].update();
 		}
 		
 		// the animation step is called whenever the screen is supposed to draw
