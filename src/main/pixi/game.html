@@ -17,7 +17,7 @@ body {
 <body>
 	<script type="text/javascript">
 	// some static information about the world
-	var WORLD = { WIDTH:600, HEIGHT:300, FLOOR:200, STEP_DURATION:16, PREVIOUS_UPDATE:-1 };
+	var WORLD = { WIDTH:960, HEIGHT:540, FLOOR:400, STEP_DURATION:16, PREVIOUS_UPDATE:-1 };
 		
 	(function() {
 		// create an new instance of a pixi stage
@@ -45,7 +45,7 @@ body {
 		var onScreenObjects = [];
 		
 		loadMainstreet(background, foreground, onScreenObjects);
-		var agent = createActor(stage, WORLD.WIDTH/2);
+		var agent = createAgent(stage, WORLD.WIDTH/2);
 		keyInteract = function() {
 			// find an element that is near the player
 		    for(i in onScreenObjects) {
