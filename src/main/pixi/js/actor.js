@@ -34,14 +34,15 @@ function createActor(stage, xpos) {
 	
 	obj.update = function() {
 		
-		// step the breathing
+		//// step the breathing
+	    // update breathing state
+	    obj.state.breathingStep += obj.state.activity*obj.state.breathingVel;
+	    if(obj.state.breathingStep > obj.base.breathingMagnitude || obj.state.breathingStep < -obj.base.breathingMagnitude)
+	    	obj.state.breathingVel *= -1;
+	    // update stage state
 	    obj.stage.shadow.width = obj.base.width + obj.state.breathingStep;
 	    obj.stage.circle.width = obj.base.width + obj.state.breathingStep;
 	    obj.stage.circle.height = obj.base.height - obj.state.breathingStep;
-	    obj.state.breathingStep += obj.state.activity*obj.state.breathingVel;
-	    
-	    if(obj.state.breathingStep > obj.base.breathingMagnitude || obj.state.breathingStep < -obj.base.breathingMagnitude)
-	    	obj.state.breathingVel *= -1;
 	};
 	
 	obj.getX = function() { return obj.stage.circle.position.x };
