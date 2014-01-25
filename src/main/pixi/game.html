@@ -34,10 +34,10 @@ body {
  	keyLeft = function() { foreground.position.x += 16; background.position.x += 8; };
 	keyRight = function() { foreground.position.x -= 16; background.position.x -= 8; };
 
-	// create a renderer instance.
-	// TEST on some machines, this will create a WebGLRender, but the bunny will not be drawn
-//	var renderer = PIXI.autoDetectRenderer(400, 300);
-	var renderer = new PIXI.CanvasRenderer(WORLD.WIDTH, WORLD.HEIGHT);
+	// create a renderer instance
+	// TODO make a note that: if you are using chrome and running from a file system, the security policy won't let you load images
+	// - to get around this, use firefox, or use a hoted version
+	var renderer = new PIXI.WebGLRenderer(WORLD.WIDTH, WORLD.HEIGHT);
 
 	// add the renderer view element to the DOM
 	document.body.appendChild(renderer.view);
