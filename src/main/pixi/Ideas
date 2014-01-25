@@ -10,3 +10,11 @@ Mechanics
  - As the world gets brighter (player mood), time will pass slower (lower mood, faster passage of time)
  - As your mood improves, more things appear on screen (or disappear)
 
+
+
+What is implemented
+ - Basic foreground / background paralaxing
+ - Load levels (and unload previous level)
+ - pixi game loop (render loop) adpated so we can control time better (we can update zero or multiple times per render if needed)
+ - actors (a basic class-like struct)
+ - basic keys, mapped to player movement
