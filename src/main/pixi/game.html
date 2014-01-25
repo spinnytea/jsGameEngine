@@ -92,7 +92,7 @@ body {
 		function updateStep() {
 			theskyyyy.rotation -= 0.01;
 			WORLD.AGENT.update();
-		    grayFilter.gray = 1 - agent.state.mood;
+		    grayFilter.gray = 1 - WORLD.AGENT.state.mood;
 		    for(i in onScreenObjects)
 		    	onScreenObjects[i].update();
 		}
