@@ -50,12 +50,21 @@ body {
 		ground.position.y = WORLD.FLOOR;
 		stage.addChild(ground);
 
+		// create the sky
 		var theskyyyy = new PIXI.Sprite(PIXI.Texture.fromImage("assets/THE_SKYYYYYYYYY.png"));
 		theskyyyy.anchor.x = 0.5;
 		theskyyyy.anchor.y = 0.5;
 		theskyyyy.position.x = WORLD.WIDTH / 2;
 		theskyyyy.position.y = WORLD.HEIGHT + 260;
 		skybox.addChild(theskyyyy);
+
+		var thesun = new PIXI.Sprite(PIXI.Texture.fromImage("assets/sun.png"));
+		thesun.anchor.x = 0.5;
+		thesun.anchor.y = 0.5;
+		thesun.position.x = WORLD.WIDTH / 2;
+		thesun.position.y = -80;
+		thesun.radius = Math.abs(theskyyyy.position.y) + Math.abs(thesun.position.y);
+		skybox.addChild(thesun);
 
 		// add the renderer view element to the DOM
 		document.body.appendChild(renderer.view);
@@ -75,6 +84,8 @@ body {
 		
 		function updateStep() {
 			theskyyyy.rotation -= 0.01;
+			thesun.position.x = thesun.radius * Math.cos(theskyyyy.rotation) + theskyyyy.position.x;
+			thesun.position.y = thesun.radius * Math.sin(theskyyyy.rotation) + theskyyyy.position.y;
 		    agent.update();
 		    grayFilter.gray = 1 - agent.state.mood;
 		    for(i in onScreenObjects)
