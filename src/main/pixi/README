@@ -6,3 +6,4 @@ resources - libraries that we have downloaded
 conventions
  - elements that get added to "onScreenObjects" can have an update method
  - elements that get added to "onScreenObjects" use a function called "interact" that will be called when the agent interacts with it
+ . - if the element has interact, it also needs getStageX()

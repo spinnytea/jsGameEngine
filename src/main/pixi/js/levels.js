@@ -1,7 +1,15 @@
 function loadMainstreet(background, foreground, onScreenObjects) {
 	emptyScreenObjects(background, foreground, onScreenObjects);
 
-	onScreenObjects.push(createActor(background, 250));
+	var house = createProp(foreground, 270, "house", 250);
+	house.interact = function() {
+		dialog("Go home?",
+				[
+				 { 'text': "Yes.", 'response': "Welcome home.", 'action': function() { loadHouse(background, foreground, onScreenObjects); } },
+				 { 'text': "No.", 'response': "Let's do something first.", 'action': function() { } },
+				 ]);
+	}
+	onScreenObjects.push(house);
 
 	var talker = createActor(foreground, 470);
 	talker.interact = function() {
@@ -13,26 +21,10 @@ function loadMainstreet(background, foreground, onScreenObjects) {
 				 ]);
 	};
 	onScreenObjects.push(talker);
-
-	onScreenObjects.push(createProp(foreground, 200));
-    var house = createProp(foreground, 270, "house", 250);
-
-    house.interact = function() {
-    	dialog("Go home?",
-				[
-				 { 'text': "Yes.", 'response': "Welcome home.", 'action': function() { increaseMood(-0.05, 0.3); } },
-				 { 'text': "No.", 'response': "Let's do something first.", 'action': function() { increaseMood(0.05, 0.3); } },
-				 { 'text': "...", 'response': "I'm not going to force you to talk, but it does help.", 'action': function() { increaseMood(-0.05, 1); } },
-				]);
-    }
-
-	onScreenObjects.push(house);
 }
 
-function loadHouse() {
+function loadHouse(background, foreground, onScreenObjects) {
 	emptyScreenObjects(background, foreground, onScreenObjects);
-	
-
 }
 
 
