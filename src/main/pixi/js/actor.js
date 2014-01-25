@@ -64,3 +64,13 @@ function createActor(stage, xpos) {
 	
 	return obj;
 }
+
+
+function createAgent(stage, xpos) {
+	var agent = createActor(stage, xpos);
+	
+	// scalar value from 0 to 1
+	agent.state.mood = 0.1;
+	
+	return agent;
+}
