@@ -18,7 +18,7 @@ body {
 	<script>
 	
 	// some static information about the world
-	var WORLD = { WIDTH:600, HEIGHT:300, FLOOR:200 };
+	var WORLD = { WIDTH:600, HEIGHT:300, FLOOR:200, STEP_DURATION:16, PREVIOUS_UPDATE:-1 };
 	
 	// create an new instance of a pixi stage
 	var stage = new PIXI.Stage(0x66FF99);
@@ -47,13 +47,39 @@ body {
 	loadMainstreet(background, foreground, onScreenObjects);
 	var agent = createActor(stage, WORLD.WIDTH/2);
 	
-	function animate() {
-	    requestAnimFrame( animate );
-
+	function updateStep() {
 	    agent.update();
 	    for(i in onScreenObjects)
 	    	onScreenObjects[i].update();
+	}
+	
+	// the animation step is called whenever the screen is supposed to draw
+	// but we don't know how much time has passed
+	// we may want to change the update more than once because enough time has passes (or not update at all)
+	function animate() {
+	    requestAnimFrame( animate );
 
+		// get the current time
+		var currTime = new Date().getTime();
+		// did we actually updatethis time?
+		var updated = false;
+		
+		if(WORLD.PREVIOUS_UPDATE < 0) {
+			// this is the first time we called, so we only need to update once
+			updateStep();
+			WORLD.PREVIOUS_UPDATE = currTime;
+		} else {
+			// calculate the ellapsed time
+			var ellapsed = currTime - WORLD.PREVIOUS_UPDATE;
+			
+			// run the update step as many times as needed
+			while(ellapsed >= WORLD.STEP_DURATION) {
+				updateStep();
+				WORLD.PREVIOUS_UPDATE = currTime;
+				ellapsed -= WORLD.STEP_DURATION;
+			}
+		}
+		
 	    // render the stage   
 	    renderer.render(stage);
 	}
