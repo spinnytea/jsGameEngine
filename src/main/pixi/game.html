@@ -49,8 +49,16 @@ body {
 		
 		// when the agent moves, we move the foreground and background in the opposite direction
 		// things that are farther away move slower
-	 	keyLeft  = function() { foreground.position.x += 16; background.position.x += 8; };
-		keyRight = function() { foreground.position.x -= 16; background.position.x -= 8; };
+	 	keyLeft  = function() {
+			foreground.position.x += 16;
+			background.position.x += 8;
+			clearDialog();
+		};
+		keyRight = function() {
+			foreground.position.x -= 16;
+			background.position.x -= 8;
+			clearDialog();
+		};
 
 		// create a renderer instance
 		// TODO make a note that: if you are using chrome and running from a file system, the security policy won't let you load images
