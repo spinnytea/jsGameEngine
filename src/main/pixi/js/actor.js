@@ -71,7 +71,16 @@ function createAgent(stage, xpos) {
 	var agent = createActor(stage, xpos);
 	
 	// scalar value from 0 to 1
-	agent.state.mood = 0.3;
+	agent.state.mood = 0.1;
 	
 	return agent;
+}
+
+// if the mood is below this threshold, then increase the mood be this amount
+function increaseMood(amount, threshold) {
+	if(WORLD.AGENT.state.mood < threshold)
+		WORLD.AGENT.state.mood += amount;
+	
+	// clamp the value between 0 and 1
+	WORLD.AGENT.state.mood = Math.max(0, Math.min(1, WORLD.AGENT.state.mood));
 }

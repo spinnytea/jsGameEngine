@@ -1,3 +1,8 @@
 assets - images, sounds, those things
 js - all the js files that drive our game
 resources - libraries that we have downloaded
+
+
+conventions
+ - elements that get added to "onScreenObjects" must have an update method
+ - elements that get added to "onScreenObjects" use a function called "interact" that will be called when the agent interacts with it
