@@ -10,6 +10,7 @@ body {
 }
 </style>
 <script src="resources/pixi.js"></script>
+<script src="js/keypress.js"></script>
 <script src="js/actor.js"></script>
 </head>
 <body>
@@ -28,6 +29,9 @@ body {
 	
 	var agent = createActor(stage, 200);
 	var agent2 = createActor(stage, 250);
+	
+	keyLeft = function() { agent.setX(agent.getX() - 10); };
+	keyRight = function() { agent.setX(agent.getX() + 10); };
 	
 	function animate() {
 	    requestAnimFrame( animate );

@@ -11,12 +11,6 @@ function createActor(stage, xpos) {
 	circle.anchor.y = 1;
 	shadow.anchor.x = 0.5;
 	shadow.anchor.y = 0.5;
-
-	// move the sprite t the center of the screen
-	circle.position.x = xpos;
-	circle.position.y = 150;
-	shadow.position.x = xpos;
-	shadow.position.y = 150;
 	
 	stage.addChild(shadow);
 	stage.addChild(circle);
@@ -48,6 +42,20 @@ function createActor(stage, xpos) {
 	    if(obj.state.breathingStep > obj.base.breathingMagnitude || obj.state.breathingStep < -obj.base.breathingMagnitude)
 	    	obj.state.breathingVel *= -1;
 	};
-
+	
+	obj.getX = function() { return obj.stage.circle.position.x };
+	obj.getY = function() { return obj.stage.circle.position.y };
+	obj.setX = function(x) {
+		circle.position.x = x;
+		shadow.position.x = x;
+	};
+	obj.setY = function(y) {
+		circle.position.y = y;
+		shadow.position.y = y;
+	};
+	
+	obj.setX(xpos);
+	obj.setY(150);
+	
 	return obj;
 }
