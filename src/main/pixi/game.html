@@ -30,7 +30,13 @@ body {
 
 	<script type="text/javascript">
 	// some static information about the world
-	var WORLD = { WIDTH:960, HEIGHT:540, FLOOR:400, STEP_DURATION:16, PREVIOUS_UPDATE:-1, AGENT:null };
+	var WORLD = { WIDTH:960, HEIGHT:540, FLOOR:400, STEP_DURATION:16, PREVIOUS_UPDATE:-1, AGENT:null, TEXTURES:{} };
+	
+	function getTexture(name) {
+		if(!(name in WORLD.TEXTURES))
+			WORLD.TEXTURES[name] = PIXI.Texture.fromImage("assets/"+name+".png");
+		return WORLD.TEXTURES[name];
+	}
 	
 	(function() {
 		// create an new instance of a pixi stage
@@ -66,20 +72,20 @@ body {
 		var renderer = new PIXI.WebGLRenderer(WORLD.WIDTH, WORLD.HEIGHT);
 		
 		// create the ground
-		var ground = new PIXI.Sprite(PIXI.Texture.fromImage("assets/ground.png"));
+		var ground = new PIXI.Sprite(getTexture("ground"));
 		ground.width = WORLD.WIDTH;
 		ground.position.y = WORLD.FLOOR;
 		stage.addChild(ground);
 
 		// create the sky
-		var theskyyyy = new PIXI.Sprite(PIXI.Texture.fromImage("assets/THE_SKYYYYYYYYY.png"));
+		var theskyyyy = new PIXI.Sprite(getTexture("THE_SKYYYYYYYYY"));
 		theskyyyy.anchor.x = 0.5;
 		theskyyyy.anchor.y = 0.5;
 		theskyyyy.position.x = WORLD.WIDTH / 2;
 		theskyyyy.position.y = WORLD.HEIGHT + 260;
 		skybox.addChild(theskyyyy);
 
-		var thesun = new PIXI.Sprite(PIXI.Texture.fromImage("assets/sun.png"));
+		var thesun = new PIXI.Sprite(getTexture("sun"));
 		thesun.anchor.x = 0.5;
 		thesun.anchor.y = 0.5;
 		thesun.position.x = WORLD.WIDTH / 2;

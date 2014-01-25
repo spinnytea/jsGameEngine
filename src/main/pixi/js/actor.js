@@ -3,8 +3,8 @@ function createActor(stage, xpos) {
 	
 	// create a texture from an image path
 	// create a new Sprite using the texture
-	var circle = new PIXI.Sprite(PIXI.Texture.fromImage("assets/circle.png"));
-	var shadow = new PIXI.Sprite(PIXI.Texture.fromImage("assets/shadow.png"));
+	var circle = new PIXI.Sprite(getTexture("circle"));
+	var shadow = new PIXI.Sprite(getTexture("shadow"));
 	
 	// center the sprites anchor point
 	circle.anchor.x = 0.5;
@@ -72,6 +72,9 @@ function createAgent(stage, xpos) {
 	
 	// scalar value from 0 to 1
 	agent.state.mood = 0.1;
+	
+	// you can have three items
+	agent.inventory = [ null, null, null ];
 	
 	return agent;
 }
