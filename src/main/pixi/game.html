@@ -6,19 +6,32 @@
 body {
 	margin: 0;
 	padding: 0;
-	background-color: #000000;
+	background-color: black;
+}
+
+.text {
+	color: white;
 }
 </style>
 <script src="resources/pixi.js"></script>
+<script src="resources/jquery.min.js"></script>
 <script src="js/keypress.js"></script>
 <script src="js/actor.js"></script>
 <script src="js/levels.js"></script>
+<script src="js/dialog.js"></script>
 </head>
 <body>
+
+	<div id="game_div"></div>
+	<div class="text">
+		<div id="response_div"></div>
+		<div id="choices_div"></div>
+	</div>
+
 	<script type="text/javascript">
 	// some static information about the world
-	var WORLD = { WIDTH:960, HEIGHT:540, FLOOR:400, STEP_DURATION:16, PREVIOUS_UPDATE:-1 };
-		
+	var WORLD = { WIDTH:960, HEIGHT:540, FLOOR:400, STEP_DURATION:16, PREVIOUS_UPDATE:-1, AGENT:null };
+	
 	(function() {
 		// create an new instance of a pixi stage
 		var stage = new PIXI.Stage(0x66FF99);
@@ -46,26 +59,26 @@ body {
 		stage.addChild(ground);
 
 		// add the renderer view element to the DOM
-		document.body.appendChild(renderer.view);
+		$("#game_div").append(renderer.view);
 		
 		var onScreenObjects = [];
 		
 		loadMainstreet(background, foreground, onScreenObjects);
-		var agent = createAgent(stage, WORLD.WIDTH/2);
+		WORLD.AGENT = createAgent(stage, WORLD.WIDTH/2);
 		keyInteract = function() {
 			// find an element that is near the player
 		    for(i in onScreenObjects) {
 		    	if(onScreenObjects[i].interact) {
 			    	// get the distance between the elements and the agent
-			    	var dist = Math.abs(onScreenObjects[i].getStageX() - agent.getStageX());
-			    	if(dist < agent.base.width/2)
+			    	var dist = Math.abs(onScreenObjects[i].getStageX() - WORLD.AGENT.getStageX());
+			    	if(dist < WORLD.AGENT.base.width/2)
 			    		onScreenObjects[i].interact();
 		    	}
 		    }
 		};
 		
 		function updateStep() {
-		    agent.update();
+			WORLD.AGENT.update();
 		    for(i in onScreenObjects)
 		    	onScreenObjects[i].update();
 		}

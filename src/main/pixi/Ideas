@@ -19,3 +19,5 @@ What is implemented
  - pixi game loop (render loop) adpated so we can control time better (we can update zero or multiple times per render if needed)
  - actors (a basic class-like struct)
  - basic keys, mapped to player movement
+ - interact with objects on screen via interact method
+ - basic dialog box
