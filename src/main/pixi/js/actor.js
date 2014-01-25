@@ -27,6 +27,7 @@ function createActor(stage, xpos) {
 	obj.state = {};
 	obj.state.breathingStep = 0;
 	obj.state.breathingVel = 1;
+	obj.state.activity = Math.random()*0.1 + 0.25;
 	
 	// set the height of the shadow
 	obj.stage.shadow.height = obj.base.height / 4;
@@ -37,7 +38,7 @@ function createActor(stage, xpos) {
 	    obj.stage.shadow.width = obj.base.width + obj.state.breathingStep;
 	    obj.stage.circle.width = obj.base.width + obj.state.breathingStep;
 	    obj.stage.circle.height = obj.base.height - obj.state.breathingStep;
-	    obj.state.breathingStep += 0.3*obj.state.breathingVel; // TODO make 0.3 reflect activity level
+	    obj.state.breathingStep += obj.state.activity*obj.state.breathingVel;
 	    
 	    if(obj.state.breathingStep > obj.base.breathingMagnitude || obj.state.breathingStep < -obj.base.breathingMagnitude)
 	    	obj.state.breathingVel *= -1;
@@ -55,7 +56,7 @@ function createActor(stage, xpos) {
 	};
 	
 	obj.setX(xpos);
-	obj.setY(150);
+	obj.setY(WORLD.FLOOR);
 	
 	return obj;
 }

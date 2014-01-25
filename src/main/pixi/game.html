@@ -15,29 +15,43 @@ body {
 </head>
 <body>
 	<script>
+	
+	var WORLD = { HEIGHT:300,FLOOR:200};
 
+	
 	// create an new instance of a pixi stage
 	var stage = new PIXI.Stage(0x66FF99);
+	
+	// create two different containers to add elements into
+	var background = new PIXI.DisplayObjectContainer();
+	var foreground = new PIXI.DisplayObjectContainer();
+	stage.addChild(background);
+	stage.addChild(foreground);
+	
+	// when the agent moves, we move the foreground and background in the opposite direction
+	// things that are farther away move slower
+ 	keyLeft = function() { foreground.position.x += 16; background += 8; };
+	keyRight = function() { foreground.position.x -= 16; background -= 8; };
 
 	// create a renderer instance.
 	// TEST on some machines, this will create a WebGLRender, but the bunny will not be drawn
 //	var renderer = PIXI.autoDetectRenderer(400, 300);
-	var renderer = new PIXI.CanvasRenderer(400, 300);
+	var renderer = new PIXI.CanvasRenderer(600, WORLD.HEIGHT);
 
 	// add the renderer view element to the DOM
 	document.body.appendChild(renderer.view);
 	
-	var agent = createActor(stage, 200);
-	var agent2 = createActor(stage, 250);
-	
-	keyLeft = function() { agent.setX(agent.getX() - 10); };
-	keyRight = function() { agent.setX(agent.getX() + 10); };
+	// TEST agents
+	var agent2 = createActor(foreground, 250);
+	var agent3 = createActor(foreground, 270);
+	var agent = createActor(stage, 300);
 	
 	function animate() {
 	    requestAnimFrame( animate );
-	    
+
 	    agent.update();
 	    agent2.update();
+	    agent3.update();
 
 	    // render the stage   
 	    renderer.render(stage);
