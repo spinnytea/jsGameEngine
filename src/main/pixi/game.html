@@ -15,84 +15,85 @@ body {
 <script src="js/levels.js"></script>
 </head>
 <body>
-	<script>
-	
+	<script type="text/javascript">
 	// some static information about the world
 	var WORLD = { WIDTH:600, HEIGHT:300, FLOOR:200, STEP_DURATION:16, PREVIOUS_UPDATE:-1 };
-	
-	// create an new instance of a pixi stage
-	var stage = new PIXI.Stage(0x66FF99);
-	
-	// create two different containers to add onScreenObjects into
-	var background = new PIXI.DisplayObjectContainer();
-	var foreground = new PIXI.DisplayObjectContainer();
-	stage.addChild(background);
-	stage.addChild(foreground);
-	
-	// when the agent moves, we move the foreground and background in the opposite direction
-	// things that are farther away move slower
- 	keyLeft = function() { foreground.position.x += 16; background.position.x += 8; };
-	keyRight = function() { foreground.position.x -= 16; background.position.x -= 8; };
-
-	// create a renderer instance
-	// TODO make a note that: if you are using chrome and running from a file system, the security policy won't let you load images
-	// - to get around this, use firefox, or use a hoted version
-	var renderer = new PIXI.WebGLRenderer(WORLD.WIDTH, WORLD.HEIGHT);
-
-	// add the renderer view element to the DOM
-	document.body.appendChild(renderer.view);
-	
-	var onScreenObjects = [];
-	
-	loadMainstreet(background, foreground, onScreenObjects);
-	var agent = createActor(stage, WORLD.WIDTH/2);
-	keyInteract = function() {
-		// find an element that is near the player
-	    for(i in onScreenObjects) {
-	    	// get the distance between the elements and the agent
-	    	var dist = Math.abs(onScreenObjects[i].getStageX() - agent.getStageX());
-	    	console.log(dist);
-	    }
-	};
-	
-	function updateStep() {
-	    agent.update();
-	    for(i in onScreenObjects)
-	    	onScreenObjects[i].update();
-	}
-	
-	// the animation step is called whenever the screen is supposed to draw
-	// but we don't know how much time has passed
-	// we may want to change the update more than once because enough time has passes (or not update at all)
-	function animate() {
-	    requestAnimFrame( animate );
-
-		// get the current time
-		var currTime = new Date().getTime();
-		// did we actually updatethis time?
-		var updated = false;
 		
-		if(WORLD.PREVIOUS_UPDATE < 0) {
-			// this is the first time we called, so we only need to update once
-			updateStep();
-			WORLD.PREVIOUS_UPDATE = currTime;
-		} else {
-			// calculate the ellapsed time
-			var ellapsed = currTime - WORLD.PREVIOUS_UPDATE;
-			
-			// run the update step as many times as needed
-			while(ellapsed >= WORLD.STEP_DURATION) {
-				updateStep();
-				WORLD.PREVIOUS_UPDATE = currTime;
-				ellapsed -= WORLD.STEP_DURATION;
-			}
+	(function() {
+		// create an new instance of a pixi stage
+		var stage = new PIXI.Stage(0x66FF99);
+		
+		// create two different containers to add onScreenObjects into
+		var background = new PIXI.DisplayObjectContainer();
+		var foreground = new PIXI.DisplayObjectContainer();
+		stage.addChild(background);
+		stage.addChild(foreground);
+		
+		// when the agent moves, we move the foreground and background in the opposite direction
+		// things that are farther away move slower
+	 	keyLeft  = function() { foreground.position.x += 16; background.position.x += 8; };
+		keyRight = function() { foreground.position.x -= 16; background.position.x -= 8; };
+
+		// create a renderer instance
+		// TODO make a note that: if you are using chrome and running from a file system, the security policy won't let you load images
+		// - to get around this, use firefox, or use a hoted version
+		var renderer = new PIXI.WebGLRenderer(WORLD.WIDTH, WORLD.HEIGHT);
+
+		// add the renderer view element to the DOM
+		document.body.appendChild(renderer.view);
+		
+		var onScreenObjects = [];
+		
+		loadMainstreet(background, foreground, onScreenObjects);
+		var agent = createActor(stage, WORLD.WIDTH/2);
+		keyInteract = function() {
+			// find an element that is near the player
+		    for(i in onScreenObjects) {
+		    	// get the distance between the elements and the agent
+		    	var dist = Math.abs(onScreenObjects[i].getStageX() - agent.getStageX());
+		    	console.log(dist);
+		    }
+		};
+		
+		function updateStep() {
+		    agent.update();
+		    for(i in onScreenObjects)
+		    	onScreenObjects[i].update();
 		}
 		
-	    // render the stage   
-	    renderer.render(stage);
-	}
-	
-	requestAnimFrame( animate );
+		// the animation step is called whenever the screen is supposed to draw
+		// but we don't know how much time has passed
+		// we may want to change the update more than once because enough time has passes (or not update at all)
+		function animate() {
+		    requestAnimFrame( animate );
+
+			// get the current time
+			var currTime = new Date().getTime();
+			// did we actually updatethis time?
+			var updated = false;
+			
+			if(WORLD.PREVIOUS_UPDATE < 0) {
+				// this is the first time we called, so we only need to update once
+				updateStep();
+				WORLD.PREVIOUS_UPDATE = currTime;
+			} else {
+				// calculate the ellapsed time
+				var ellapsed = currTime - WORLD.PREVIOUS_UPDATE;
+				
+				// run the update step as many times as needed
+				while(ellapsed >= WORLD.STEP_DURATION) {
+					updateStep();
+					WORLD.PREVIOUS_UPDATE = currTime;
+					ellapsed -= WORLD.STEP_DURATION;
+				}
+			}
+			
+		    // render the stage   
+		    renderer.render(stage);
+		}
+		
+		requestAnimFrame( animate );
+	}());
 	</script>
 </body>
 </html>
