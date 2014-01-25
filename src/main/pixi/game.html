@@ -46,6 +46,14 @@ body {
 	
 	loadMainstreet(background, foreground, onScreenObjects);
 	var agent = createActor(stage, WORLD.WIDTH/2);
+	keyInteract = function() {
+		// find an element that is near the player
+	    for(i in onScreenObjects) {
+	    	// get the distance between the elements and the agent
+	    	var dist = Math.abs(onScreenObjects[i].getStageX() - agent.getStageX());
+	    	console.log(dist);
+	    }
+	};
 	
 	function updateStep() {
 	    agent.update();

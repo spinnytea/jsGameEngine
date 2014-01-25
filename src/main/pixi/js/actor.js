@@ -55,6 +55,10 @@ function createActor(stage, xpos) {
 		shadow.position.y = y;
 	};
 	
+	obj.getStageX = function() {
+		return obj.stage.circle.position.x + obj.stage.circle.parent.position.x;
+	}
+	
 	obj.setX(xpos);
 	obj.setY(WORLD.FLOOR);
 	

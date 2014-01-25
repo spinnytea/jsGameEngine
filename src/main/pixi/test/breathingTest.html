@@ -9,7 +9,7 @@ body {
 	background-color: #000000;
 }
 </style>
-<script src="resources/pixi.js"></script>
+<script src="../resources/pixi.js"></script>
 </head>
 <body>
 	<script>
@@ -29,8 +29,8 @@ body {
 
 	// create a texture from an image path
 	// create a new Sprite using the texture
-	var circle = new PIXI.Sprite(PIXI.Texture.fromImage("assets/circle.png"));
-	var shadow = new PIXI.Sprite(PIXI.Texture.fromImage("assets/shadow.png"));
+	var circle = new PIXI.Sprite(PIXI.Texture.fromImage("../assets/circle.png"));
+	var shadow = new PIXI.Sprite(PIXI.Texture.fromImage("../assets/shadow.png"));
 
 	// center the sprites anchor point
 	circle.anchor.x = 0.5;
