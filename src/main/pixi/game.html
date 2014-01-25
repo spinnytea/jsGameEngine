@@ -55,9 +55,12 @@ body {
 		keyInteract = function() {
 			// find an element that is near the player
 		    for(i in onScreenObjects) {
-		    	// get the distance between the elements and the agent
-		    	var dist = Math.abs(onScreenObjects[i].getStageX() - agent.getStageX());
-		    	console.log(dist);
+		    	if(onScreenObjects[i].interact) {
+			    	// get the distance between the elements and the agent
+			    	var dist = Math.abs(onScreenObjects[i].getStageX() - agent.getStageX());
+			    	if(dist < agent.base.width/2)
+			    		onScreenObjects[i].interact();
+		    	}
 		    }
 		};
 		

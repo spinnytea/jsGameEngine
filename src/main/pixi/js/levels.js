@@ -1,7 +1,11 @@
 function loadMainstreet(background, foreground, onScreenObjects) {
 	emptyScreenObjects(background, foreground, onScreenObjects);
 	onScreenObjects.push(createActor(background, 250));
-	onScreenObjects.push(createActor(foreground, 270));
+	var talker = createActor(foreground, 270);
+	talker.interact = function() {
+		// FIXME dialog tree
+	};
+	onScreenObjects.push(talker);
 }
 
 function loadHouse() {
