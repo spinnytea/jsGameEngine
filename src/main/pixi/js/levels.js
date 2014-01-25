@@ -3,15 +3,14 @@ function loadMainstreet(onScreenObjects, from) {
 	WORLD.AGENT.setX(WORLD.WIDTH / 2);
 	WORLD.MOVEMENT = "world";
 
+	var therapist = createProp(WORLD.GROUNDS.foreground, -300, "therapist", 400, 0.7);
+	therapist.interact = function() { loadTherapist(onScreenObjects); };
+	onScreenObjects.push(therapist);
+	if(from && from == "therapist")
+		WORLD.GROUNDS.foreground.position.x = WORLD.WIDTH / 2 - therapist.getX();
+
 	var house = createProp(WORLD.GROUNDS.foreground, 270, "house", 250, 0.3);
-	house.interact = function() {
-		loadHouse(onScreenObjects);
-//		dialog("Go home?",
-//				[
-//				 { 'text': "Yes.", 'response': "Welcome home.", 'action': function() { loadHouse(onScreenObjects); } },
-//				 { 'text': "No.", 'response': "Let's do something first.", 'action': function() { } },
-//				 ]);
-	};
+	house.interact = function() { loadHouse(onScreenObjects); };
 	onScreenObjects.push(house);
 	if(from && from == "house")
 		WORLD.GROUNDS.foreground.position.x = WORLD.WIDTH / 2 - house.getX();
@@ -70,6 +69,20 @@ function loadHouse(onScreenObjects) {
 	};
 	onScreenObjects.push(bedroom);
 	WORLD.AGENT.setX(bedroom.getStageX());
+}
+
+function loadTherapist(onScreenObjects) {
+	emptyScreenObjects(onScreenObjects);
+	WORLD.MOVEMENT = "player";
+	
+	var interior = createProp(WORLD.GROUNDS.staticforeground, WORLD.WIDTH * 0.5, "therapistinterior", WORLD.HEIGHT * 1.2);
+	interior.setY(WORLD.HEIGHT);
+	interior.stage.item.width = WORLD.WIDTH;
+	interior.interact = function() {
+		loadMainstreet(onScreenObjects, "therapist");
+	};
+	onScreenObjects.push(interior);
+	WORLD.AGENT.setX(interior.getStageX());
 }
 
 
