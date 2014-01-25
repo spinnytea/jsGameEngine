@@ -71,13 +71,27 @@ body {
 		// when the agent moves, we move the foreground and background in the opposite direction
 		// things that are farther away move slower
 	 	keyLeft  = function() {
-			foreground.position.x += 16;
-			background.position.x += 8;
+	 		if(WORLD.AGENT.state.speed > 0)
+	 		    WORLD.AGENT.state.speed = 0;
+	 		else	
+	 		    WORLD.AGENT.state.speed -= 2;
+			// foreground.position.x += 16;
+			// background.position.x += 8;
+			foreground.position.x -= 2*WORLD.AGENT.state.speed;
+			background.position.x -= WORLD.AGENT.state.speed;
+
 			clearDialog();
 		};
 		keyRight = function() {
-			foreground.position.x -= 16;
-			background.position.x -= 8;
+	 		if(WORLD.AGENT.state.speed < 0)
+	 		    WORLD.AGENT.state.speed = 0;
+	 		else	
+	 		    WORLD.AGENT.state.speed += 2;
+			// foreground.position.x -= 16;
+			// background.position.x -= 8;
+			foreground.position.x -= 2*WORLD.AGENT.state.speed;
+			background.position.x -= WORLD.AGENT.state.speed;
+
 			clearDialog();
 		};
 
@@ -135,6 +149,16 @@ body {
 		    	}
 		    }
 		};
+
+		keyJump = function() {
+			//press space to jump
+			WORLD.AGENT.jumpstate.isJumping = true;
+
+		};
+
+        keyJumpDown = function() {
+    		WORLD.AGENT.jumpstate.isJumping = false;
+    	}
 
 		function updateStep() {
 		    theskyyyy.rotation -= 0.0005;

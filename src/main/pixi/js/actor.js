@@ -25,6 +25,7 @@ function createActor(stage, xpos) {
 	obj.base.breathingMagnitude = 5;
 	
 	obj.state = {};
+ 
 	obj.state.breathingStep = 0;
 	obj.state.breathingVel = 1;
 	obj.state.activity = Math.random()*0.1 + 0.25;
@@ -72,7 +73,37 @@ function createAgent(stage, xpos) {
 	
 	// scalar value from 0 to 1
 	agent.state.mood = 0.1;
-	
+	agent.state.speed = 0;
+    agent.state.height = 0;
+
+    agent.prevTime = (new Date()).getTime();
+
+	agent.jumpstate = {};
+	agent.jumpstate.isJumping = false;
+
+	var update = agent.update;
+	agent.update = function() {
+		update();
+
+		if(agent.jumpstate.isJumping)  {
+
+			// agent.prevTime = agent.curTime;
+	  //       agent.curTime = (new Date()).getTime();
+	  //       deltaTime = agent.curTime - agent.prevTime;
+            agent.state.height -= 1;
+			agent.setY(WORLD.FLOOR + agent.state.height);
+            
+			//agent.jumpstate.isJumping = false;
+	  //       agent.state.height += 0.0004*deltaTime;
+			// agent.setY(WORLD.FLOOR + agent.state.height);
+			
+		}
+		else	{
+
+		 	agent.setY(WORLD.FLOOR);  
+		}
+	};
+
 	// you can have three items
 	agent.inventory = [ null, null, null ];
 	for(i in agent.inventory) {
