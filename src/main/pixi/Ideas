@@ -11,7 +11,14 @@ Mechanics
  - As the world gets brighter (player mood), time will pass slower (lower mood, faster passage of time)
  - As your mood improves, more things appear on screen (or disappear)
  - Quests (trigger some series of tasks that need to be completed)
+ . - Library book
 
+
+TODO
+ - indicate when there is something to interact with
+ - put a plant in your house that you can take to the therapist
+ - make the agent a square
+ - limit some of the dialogs to one time only
 
 
 What is implemented
