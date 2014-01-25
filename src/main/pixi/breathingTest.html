@@ -28,30 +28,38 @@ body {
 	requestAnimFrame( animate );
 
 	// create a texture from an image path
-	var texture = PIXI.Texture.fromImage("assets/circle.png");
 	// create a new Sprite using the texture
-	var circle = new PIXI.Sprite(texture);
+	var circle = new PIXI.Sprite(PIXI.Texture.fromImage("assets/circle.png"));
+	var shadow = new PIXI.Sprite(PIXI.Texture.fromImage("assets/shadow.png"));
 
 	// center the sprites anchor point
 	circle.anchor.x = 0.5;
 	circle.anchor.y = 1;
+	shadow.anchor.x = 0.5;
+	shadow.anchor.y = 0.5;
 
 	// move the sprite t the center of the screen
 	circle.position.x = 200;
 	circle.position.y = 150;
+	shadow.position.x = 200;
+	shadow.position.y = 150;
 	
 	var baseWidth = 32;
 	var baseHeight = 32;
 	var breathingStep = 0;
 	var breathingVel = 1;
 	var breathingMax = 5;
+	
+	shadow.height = baseHeight / 4;
 
+	stage.addChild(shadow);
 	stage.addChild(circle);
 
 	function animate() {
 
 	    requestAnimFrame( animate );
 	    
+	    shadow.width = baseWidth + breathingStep;
 	    circle.width = baseWidth + breathingStep;
 	    circle.height = baseHeight - breathingStep;
 	    breathingStep += 0.3*breathingVel;
