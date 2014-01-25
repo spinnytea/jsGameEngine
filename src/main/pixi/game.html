@@ -22,12 +22,17 @@ body {
 	(function() {
 		// create an new instance of a pixi stage
 		var stage = new PIXI.Stage(0x66FF99);
+
+		var grayFilter = new PIXI.GrayFilter();
 		
 		// create two different containers to add onScreenObjects into
 		var background = new PIXI.DisplayObjectContainer();
 		var foreground = new PIXI.DisplayObjectContainer();
+		var skybox     = new PIXI.DisplayObjectContainer();
+		stage.addChild(skybox);
 		stage.addChild(background);
 		stage.addChild(foreground);
+		stage.filters = [grayFilter];
 		
 		// when the agent moves, we move the foreground and background in the opposite direction
 		// things that are farther away move slower
@@ -44,6 +49,13 @@ body {
 		ground.width = WORLD.WIDTH;
 		ground.position.y = WORLD.FLOOR;
 		stage.addChild(ground);
+
+		var theskyyyy = new PIXI.Sprite(PIXI.Texture.fromImage("assets/THE_SKYYYYYYYYY.png"));
+		theskyyyy.anchor.x = 0.5;
+		theskyyyy.anchor.y = 0.5;
+		theskyyyy.position.x = WORLD.WIDTH / 2;
+		theskyyyy.position.y = WORLD.HEIGHT + 260;
+		skybox.addChild(theskyyyy);
 
 		// add the renderer view element to the DOM
 		document.body.appendChild(renderer.view);
@@ -62,7 +74,9 @@ body {
 		};
 		
 		function updateStep() {
+			theskyyyy.rotation -= 0.01;
 		    agent.update();
+		    grayFilter.gray = 1 - agent.state.mood;
 		    for(i in onScreenObjects)
 		    	onScreenObjects[i].update();
 		}
