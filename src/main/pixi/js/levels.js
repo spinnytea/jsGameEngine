@@ -3,18 +3,19 @@ function loadMainstreet(background, foreground, onScreenObjects) {
 
 	var house = createProp(foreground, 270, "house", 250, 0.3);
 	house.interact = function() {
-		dialog("Go home?",
-				[
-				 { 'text': "Yes.", 'response': "Welcome home.", 'action': function() { loadHouse(background, foreground, onScreenObjects); } },
-				 { 'text': "No.", 'response': "Let's do something first.", 'action': function() { } },
-				 ]);
+		loadHouse(background, foreground, onScreenObjects);
+//		dialog("Go home?",
+//				[
+//				 { 'text': "Yes.", 'response': "Welcome home.", 'action': function() { loadHouse(background, foreground, onScreenObjects); } },
+//				 { 'text': "No.", 'response': "Let's do something first.", 'action': function() { } },
+//				 ]);
 	};
 	onScreenObjects.push(house);
 
 	var library = createProp(foreground, 1200, "library", 300, 0.63);
 	library.interact = function() {
-		useItem("book", 0.15, 0.5);
 		dialog("[the book has been returned]");
+		useItem("book", 0.15, 0.5);
 	};
 	onScreenObjects.push(library);
 	
@@ -42,6 +43,18 @@ function loadMainstreet(background, foreground, onScreenObjects) {
 
 function loadHouse(background, foreground, onScreenObjects) {
 	emptyScreenObjects(background, foreground, onScreenObjects);
+	
+	var bedroom = createProp(foreground, 300, "bedroom", 400, 0.44);
+	bedroom.setY(bedroom.getY()+50);
+	bedroom.interact = function() {
+		loadMainstreet(background, foreground, onScreenObjects);
+//		dialog("Go outside?",
+//				[
+//				 { 'text': "Yes.", 'response': "Off you go.", 'action': function() { loadMainstreet(background, foreground, onScreenObjects); } },
+//				 { 'text': "No.", 'response': "Not right now.", 'action': function() { } },
+//				 ]);
+	};
+	onScreenObjects.push(bedroom);
 }
 
 

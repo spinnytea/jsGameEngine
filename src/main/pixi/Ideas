@@ -2,6 +2,7 @@ Feedback
  - World Color (basic expression of player mood; the goal is to improve the mood)
  - Passage of Time
  - Player breathing
+ - Glow when there is something to interact with
 
 Mechanics
  - If the player is more active, it will breath faster (less active, breath slower)

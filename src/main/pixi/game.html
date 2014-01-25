@@ -60,13 +60,19 @@ body {
 		var grayFilter = new PIXI.GrayFilter();
 		
 		// create two different containers to add onScreenObjects into
-		var background = new PIXI.DisplayObjectContainer();
-		var foreground = new PIXI.DisplayObjectContainer();
 		var skybox     = new PIXI.DisplayObjectContainer();
+		var background = new PIXI.DisplayObjectContainer();
+		var staticforeground = new PIXI.DisplayObjectContainer();
+		var foreground = new PIXI.DisplayObjectContainer();
 		stage.addChild(skybox);
 		stage.addChild(background);
+		stage.addChild(staticforeground);
 		stage.addChild(foreground);
 		stage.filters = [grayFilter];
+		
+		var mountain = new PIXI.TilingSprite(getTexture("mountain"), 3600, 400);
+		mountain.position.x = -1200;
+		background.addChild(mountain);
 		
 		// when the agent moves, we move the foreground and background in the opposite direction
 		// things that are farther away move slower
@@ -90,7 +96,7 @@ body {
 		var ground = new PIXI.Sprite(getTexture("ground"));
 		ground.width = WORLD.WIDTH;
 		ground.position.y = WORLD.FLOOR;
-		stage.addChild(ground);
+		staticforeground.addChild(ground);
 
 		// create the sky
 		var theskyyyy = new PIXI.Sprite(getTexture("THE_SKYYYYYYYYY"));
@@ -144,6 +150,7 @@ body {
             themoon.position.y  = themoon.radius * Math.sin(theskyyyy.rotation+Math.sin(theskyyyy.rotation*0.15+0)*0.25+Math.PI) + theskyyyy.position.y;
 		    WORLD.AGENT.update();
 		    foreground.position.x += WORLD.AGENT.state.velocity;
+		    background.position.x += WORLD.AGENT.state.velocity/2;
 		    grayFilter.gray = 1 - WORLD.AGENT.state.mood;
 		    for(i in onScreenObjects)
 		    	if(onScreenObjects[i].update)
