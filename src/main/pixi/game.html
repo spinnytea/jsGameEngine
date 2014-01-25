@@ -2,6 +2,8 @@
 <html>
 <head>
 <title>pixi.js example 1</title>
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+<link rel="stylesheet" href="css/bootstrap-theme.min.css" />
 <style>
 body {
 	margin: 0;
@@ -12,9 +14,19 @@ body {
 .text {
 	color: white;
 }
+
+.center {
+    display: table;
+    margin: 0 auto;
+}
+
+#response_div .text {
+    margin: 0 0 5px 0;
+}
 </style>
 <script src="resources/pixi.js"></script>
 <script src="resources/jquery.min.js"></script>
+<script src="resources/bootstrap.min.js"></script>
 <script src="js/keypress.js"></script>
 <script src="js/actor.js"></script>
 <script src="js/levels.js"></script>
@@ -22,11 +34,13 @@ body {
 </head>
 <body>
 
-	<div id="game_div"></div>
-	<div class="text">
-		<div id="response_div"></div>
-		<div id="choices_div"></div>
-	</div>
+    <div class="center">
+    	<div id="game_div"></div>
+    	<div class="text">
+    		<div id="response_div"></div>
+    		<div id="choices_div"></div>
+    	</div>
+    </div>
 
 	<script type="text/javascript">
 	// some static information about the world
@@ -85,6 +99,7 @@ body {
 		theskyyyy.position.y = WORLD.HEIGHT + 260;
 		skybox.addChild(theskyyyy);
 
+        // create the sun
 		var thesun = new PIXI.Sprite(getTexture("sun"));
 		thesun.anchor.x = 0.5;
 		thesun.anchor.y = 0.5;
@@ -92,6 +107,14 @@ body {
 		thesun.position.y = -80;
 		thesun.radius = Math.abs(theskyyyy.position.y) + Math.abs(thesun.position.y);
 		skybox.addChild(thesun);
+
+        var themoon = new PIXI.Sprite(getTexture("moon"));
+        themoon.anchor.x = 0.5;
+        themoon.anchor.y = 0.5;
+        themoon.radius = thesun.radius - 75;
+        themoon.position.x = WORLD.WIDTH / 2;
+        themoon.position.y = theskyyyy.position.y + themoon.radius;
+        skybox.addChild(themoon);
 
 		// add the renderer view element to the DOM
 		$("#game_div").append(renderer.view);
@@ -111,11 +134,13 @@ body {
 		    	}
 		    }
 		};
-		
+
 		function updateStep() {
-		    theskyyyy.rotation -= 0.01;
-		    thesun.position.x = thesun.radius * Math.cos(theskyyyy.rotation) + theskyyyy.position.x;
-		    thesun.position.y = thesun.radius * Math.sin(theskyyyy.rotation) + theskyyyy.position.y;
+		    theskyyyy.rotation -= 0.0005;
+		    thesun.position.x   = thesun.radius  * Math.cos(theskyyyy.rotation) + theskyyyy.position.x;
+		    thesun.position.y   = thesun.radius  * Math.sin(theskyyyy.rotation) + theskyyyy.position.y;
+            themoon.position.x  = themoon.radius * Math.cos(theskyyyy.rotation+Math.sin(theskyyyy.rotation*0.15+2)*0.50+Math.PI) + theskyyyy.position.x;
+            themoon.position.y  = themoon.radius * Math.sin(theskyyyy.rotation+Math.sin(theskyyyy.rotation*0.15+0)*0.25+Math.PI) + theskyyyy.position.y;
 		    WORLD.AGENT.update();
 		    grayFilter.gray = 1 - WORLD.AGENT.state.mood;
 		    for(i in onScreenObjects)
