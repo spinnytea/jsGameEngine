@@ -1,0 +1,11 @@
+Feedback
+ - World Color (basic expression of player mood; the goal is to improve the mood)
+ - Passage of Time
+ - Player breathing
+
+Mechanics
+ - If the player is more active, it will breath faster (less active, breath slower)
+ - If the player is more active, time will pass slower (less active, time will pass quicker)
+ - Color of the world starts off dark, as the player accomplishes things, the world gets brighter
+ - As the world gets brighter (player mood), time will pass slower (lower mood, faster passage of time)
+

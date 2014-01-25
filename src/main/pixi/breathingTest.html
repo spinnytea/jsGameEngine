@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>pixi.js example 1</title>
+<style>
+body {
+	margin: 0;
+	padding: 0;
+	background-color: #000000;
+}
+</style>
+<script src="resources/pixi.js"></script>
+</head>
+<body>
+	<script>
+
+	// create an new instance of a pixi stage
+	var stage = new PIXI.Stage(0x66FF99);
+
+	// create a renderer instance.
+	// TEST on some machines, this will create a WebGLRender, but the bunny will not be drawn
+//	var renderer = PIXI.autoDetectRenderer(400, 300);
+	var renderer = new PIXI.CanvasRenderer(400, 300);
+
+	// add the renderer view element to the DOM
+	document.body.appendChild(renderer.view);
+
+	requestAnimFrame( animate );
+
+	// create a texture from an image path
+	var texture = PIXI.Texture.fromImage("assets/circle.png");
+	// create a new Sprite using the texture
+	var circle = new PIXI.Sprite(texture);
+
+	// center the sprites anchor point
+	circle.anchor.x = 0.5;
+	circle.anchor.y = 1;
+
+	// move the sprite t the center of the screen
+	circle.position.x = 200;
+	circle.position.y = 150;
+	
+	var baseWidth = 32;
+	var baseHeight = 32;
+	var breathingStep = 0;
+	var breathingVel = 1;
+	var breathingMax = 5;
+
+	stage.addChild(circle);
+
+	function animate() {
+
+	    requestAnimFrame( animate );
+	    
+	    circle.width = baseWidth + breathingStep;
+	    circle.height = baseHeight - breathingStep;
+	    breathingStep += 0.3*breathingVel;
+	    if(breathingStep > breathingMax || breathingStep < -breathingMax)
+	    	breathingVel *= -1;
+
+	    // render the stage   
+	    renderer.render(stage);
+	}
+
+	</script>
+</body>
+</html>
