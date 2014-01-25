@@ -12,17 +12,18 @@ body {
 <script src="resources/pixi.js"></script>
 <script src="js/keypress.js"></script>
 <script src="js/actor.js"></script>
+<script src="js/levels.js"></script>
 </head>
 <body>
 	<script>
 	
-	var WORLD = { HEIGHT:300,FLOOR:200};
-
+	// some static information about the world
+	var WORLD = { WIDTH:600, HEIGHT:300, FLOOR:200 };
 	
 	// create an new instance of a pixi stage
 	var stage = new PIXI.Stage(0x66FF99);
 	
-	// create two different containers to add elements into
+	// create two different containers to add onScreenObjects into
 	var background = new PIXI.DisplayObjectContainer();
 	var foreground = new PIXI.DisplayObjectContainer();
 	stage.addChild(background);
@@ -36,22 +37,22 @@ body {
 	// create a renderer instance.
 	// TEST on some machines, this will create a WebGLRender, but the bunny will not be drawn
 //	var renderer = PIXI.autoDetectRenderer(400, 300);
-	var renderer = new PIXI.CanvasRenderer(600, WORLD.HEIGHT);
+	var renderer = new PIXI.CanvasRenderer(WORLD.WIDTH, WORLD.HEIGHT);
 
 	// add the renderer view element to the DOM
 	document.body.appendChild(renderer.view);
 	
-	// TEST agents
-	var agent2 = createActor(background, 250);
-	var agent3 = createActor(foreground, 270);
-	var agent = createActor(stage, 300);
+	var onScreenObjects = [];
+	
+	loadMainstreet(background, foreground, onScreenObjects);
+	var agent = createActor(stage, WORLD.WIDTH/2);
 	
 	function animate() {
 	    requestAnimFrame( animate );
 
 	    agent.update();
-	    agent2.update();
-	    agent3.update();
+	    for(i in onScreenObjects)
+	    	onScreenObjects[i].update();
 
 	    // render the stage   
 	    renderer.render(stage);
