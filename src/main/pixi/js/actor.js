@@ -47,12 +47,12 @@ function createActor(stage, xpos) {
 	obj.getX = function() { return obj.stage.circle.position.x };
 	obj.getY = function() { return obj.stage.circle.position.y };
 	obj.setX = function(x) {
-		circle.position.x = x;
-		shadow.position.x = x;
+		obj.stage.circle.position.x = x;
+		obj.stage.shadow.position.x = x;
 	};
 	obj.setY = function(y) {
-		circle.position.y = y;
-		shadow.position.y = y;
+		obj.stage.circle.position.y = y;
+		obj.stage.shadow.position.y = y;
 	};
 	
 	obj.getStageX = function() {
@@ -93,4 +93,40 @@ function increaseMood(amount, threshold) {
 	
 	// clamp the value between 0 and 1
 	WORLD.AGENT.state.mood = Math.max(0, Math.min(1, WORLD.AGENT.state.mood));
+}
+
+// put an item in the inventory
+// THIS MAY FAIL AND THE ITEM WILL BE LOST
+function aquireProp(prop) {
+	removeObjectFromScene(prop);
+	var success = false;
+	
+	for(i in WORLD.AGENT.inventory)
+		if(WORLD.AGENT.inventory[i] == null) {
+			success = true;
+			WORLD.AGENT.inventory[i] = prop;
+			WORLD.AGENT.stage.circle.parent.addChild(prop.stage.item);
+			prop.setX(40 * (i * 1.5 + 1));
+			prop.setY(WORLD.HEIGHT - 20);
+			break;
+		}
+	
+	if(!success)
+		dialog("[an item has been lost forever]");
+}
+
+function useItem(name, amount, threshold) {
+	var success = false;
+	
+	for(i in WORLD.AGENT.inventory)
+		if(WORLD.AGENT.inventory[i] != null && WORLD.AGENT.inventory[i].name == name) {
+			removeObjectFromScene(WORLD.AGENT.inventory[i]);
+			increaseMood(amount, threshold);
+			WORLD.AGENT.inventory[i] = null;
+			success = true;
+			break;
+		}
+	
+	if(!success)
+		dialog("[you don't have a "+name+"]");
 }

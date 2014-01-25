@@ -5,6 +5,7 @@ function createProp(stage, xpos, texturename, height, xanchor)
 	// create a texture from an image path
 	// create a new Sprite using the texture
 	var item = new PIXI.Sprite(getTexture(texturename));
+	obj.name = texturename;
 	
 	// center the sprites anchor point
 	if(xanchor)
@@ -28,10 +29,10 @@ function createProp(stage, xpos, texturename, height, xanchor)
 	obj.getX = function() { return obj.stage.item.position.x };
 	obj.getY = function() { return obj.stage.item.position.y };
 	obj.setX = function(x) {
-		item.position.x = x;
+		obj.stage.item.position.x = x;
 	};
 	obj.setY = function(y) {
-		item.position.y = y;
+		obj.stage.item.position.y = y;
 	};
 	
 	obj.getStageX = function() {
