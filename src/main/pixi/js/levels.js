@@ -1,7 +1,7 @@
 function loadMainstreet(background, foreground, onScreenObjects) {
 	emptyScreenObjects(background, foreground, onScreenObjects);
 
-	var house = createProp(foreground, 270, "house", 250);
+	var house = createProp(foreground, 270, "house", 250, 0.3);
 	house.interact = function() {
 		dialog("Go home?",
 				[

@@ -33,7 +33,6 @@ function createActor(stage, xpos) {
 	obj.stage.shadow.height = obj.base.height / 4;
 	
 	obj.update = function() {
-		
 		//// step the breathing
 	    // update breathing state
 	    obj.state.breathingStep += obj.state.activity*obj.state.breathingVel;
@@ -72,6 +71,7 @@ function createAgent(stage, xpos) {
 	
 	// scalar value from 0 to 1
 	agent.state.mood = 0.1;
+	agent.state.velocity = 0;
 	
 	// you can have three items
 	agent.inventory = [ null, null, null ];

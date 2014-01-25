@@ -1,4 +1,4 @@
-function createProp(stage, xpos, texturename, height)
+function createProp(stage, xpos, texturename, height, xanchor)
 {
 	var obj = {};
 	
@@ -7,7 +7,10 @@ function createProp(stage, xpos, texturename, height)
 	var item = new PIXI.Sprite(getTexture(texturename));
 	
 	// center the sprites anchor point
-	item.anchor.x = 0.1;
+	if(xanchor)
+		item.anchor.x = xanchor;
+	else
+		item.anchor.x = 0.5;
 	item.anchor.y = 1;
 	
 	stage.addChild(item);

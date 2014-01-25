@@ -70,16 +70,16 @@ body {
 		
 		// when the agent moves, we move the foreground and background in the opposite direction
 		// things that are farther away move slower
-	 	keyLeft  = function() {
-			foreground.position.x += 16;
-			background.position.x += 8;
+	 	keydown_left  = function() {
+			WORLD.AGENT.state.velocity = 4;
 			clearDialog();
 		};
-		keyRight = function() {
-			foreground.position.x -= 16;
-			background.position.x -= 8;
+		keydown_right = function() {
+			WORLD.AGENT.state.velocity = -4;
 			clearDialog();
 		};
+		keyup_left  = function() { WORLD.AGENT.state.velocity = 0; };
+		keyup_right = function() { WORLD.AGENT.state.velocity = 0; };
 
 		// create a renderer instance
 		// TODO make a note that: if you are using chrome and running from a file system, the security policy won't let you load images
@@ -143,6 +143,7 @@ body {
             themoon.position.x  = themoon.radius * Math.cos(theskyyyy.rotation+Math.sin(theskyyyy.rotation*0.15+2)*0.50+Math.PI) + theskyyyy.position.x;
             themoon.position.y  = themoon.radius * Math.sin(theskyyyy.rotation+Math.sin(theskyyyy.rotation*0.15+0)*0.25+Math.PI) + theskyyyy.position.y;
 		    WORLD.AGENT.update();
+		    foreground.position.x += WORLD.AGENT.state.velocity;
 		    grayFilter.gray = 1 - WORLD.AGENT.state.mood;
 		    for(i in onScreenObjects)
 		    	if(onScreenObjects[i].update)
