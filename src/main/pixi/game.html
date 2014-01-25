@@ -38,6 +38,12 @@ body {
 		// TODO make a note that: if you are using chrome and running from a file system, the security policy won't let you load images
 		// - to get around this, use firefox, or use a hoted version
 		var renderer = new PIXI.WebGLRenderer(WORLD.WIDTH, WORLD.HEIGHT);
+		
+		// create the ground
+		var ground = new PIXI.Sprite(PIXI.Texture.fromImage("assets/ground.png"));
+		ground.width = WORLD.WIDTH;
+		ground.position.y = WORLD.FLOOR;
+		stage.addChild(ground);
 
 		// add the renderer view element to the DOM
 		document.body.appendChild(renderer.view);
