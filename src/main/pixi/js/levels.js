@@ -11,6 +11,8 @@ function loadMainstreet(onScreenObjects, from) {
 	if(from && from == "therapist")
 		WORLD.GROUNDS.foreground.position.x = WORLD.WIDTH / 2 - therapist.getX();
 
+	onScreenObjects.push(createProp(WORLD.GROUNDS.foreground, 0, "tree", 300));
+	
 	var house = createProp(WORLD.GROUNDS.foreground, 270, "house", 250, 0.3);
 	house.interact = function() { loadHouse(onScreenObjects); };
 	onScreenObjects.push(house);

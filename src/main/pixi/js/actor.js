@@ -103,7 +103,7 @@ function createAgent(stage, xpos) {
 	};
 	
 	// you can have three items
-	agent.inventory = [ null, null, null ];
+	agent.inventory = [ null, null ];
 	for(i in agent.inventory) {
 		var slot = new PIXI.Sprite(getTexture("inventoryslot"));
 		slot.width = slot.height = 40;
