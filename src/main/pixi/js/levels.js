@@ -232,6 +232,30 @@ function loadHouse(onScreenObjects) {
 	bedroom.interact = function() { loadMainstreet(onScreenObjects, "house"); };
 	onScreenObjects.push(bedroom);
 	WORLD.AGENT.setX(bedroom.getStageX());
+
+	//add go to bed choice
+	var bed = createActor(WORLD.GROUNDS.staticforeground, 670, "circle");
+	bed.movement = null;
+	bed.setY(340);
+	bed.interact = function() {
+		dialog("It's late. What to go to bed?",
+		[
+		 { 'text': "Sure.", 'response': "Good.", 'action': function() {
+			 increaseMood(0.1);
+			 //To do:
+			 //loadDream(); 
+		 } },
+		 { 'text': "I don't feel like to go to sleep.", 'response': "Ok then.", 'action': function() {
+			 increaseMood(-0.1);
+		 } },
+		 { 'text': "...", 'response': "I'm not going to force you to talk, but it does help.", 'action': function() { increaseMood(-0.05); } },
+		 ]);
+	};
+	bed.visible = false;
+	if(1) {
+		onScreenObjects.push(bed);
+	}
+	
 }
 
 function loadLinwoodHouse(onScreenObjects) {
