@@ -49,6 +49,8 @@ body {
 			WIDTH:  960,
 			HEIGHT: 540,
 			FLOOR:  400,
+			MAP_MIN:  0,
+			MAP_MAX: 0,
 			STEP_DURATION:   16,
 			PREVIOUS_UPDATE: -1,
 			AGENT:    null,
@@ -158,11 +160,16 @@ body {
             themoon.position.x  = themoon.radius * Math.cos(theskyyyy.rotation+Math.sin(theskyyyy.rotation*0.15+2)*0.50+Math.PI) + theskyyyy.position.x;
             themoon.position.y  = themoon.radius * Math.sin(theskyyyy.rotation+Math.sin(theskyyyy.rotation*0.15+0)*0.25+Math.PI) + theskyyyy.position.y;
 		    WORLD.AGENT.update();
-		    if(WORLD.MOVEMENT == "player")
+		    if(WORLD.MOVEMENT == "player") {
 		    	WORLD.AGENT.setX(WORLD.AGENT.getX() - WORLD.AGENT.state.velocity);
-		    else if(WORLD.MOVEMENT == "world") {
-			    WORLD.GROUNDS.foreground.position.x += WORLD.AGENT.state.velocity;
-			    WORLD.GROUNDS.background.position.x += WORLD.AGENT.state.velocity/2;
+		    	WORLD.AGENT.setX(Math.max(WORLD.MAP_MIN, Math.min(WORLD.MAP_MAX, WORLD.AGENT.getX())));
+		    } else if(WORLD.MOVEMENT == "world") {
+		    	if(WORLD.AGENT.state.velocity < 0 && WORLD.GROUNDS.foreground.position.x <= WORLD.MAP_MIN) {} // if negative and less than min, then stop
+		    	else if(WORLD.AGENT.state.velocity > 0 && WORLD.GROUNDS.foreground.position.x >= WORLD.MAP_MAX){} // if positive and greater tan max, then stop
+		    	else {
+				    WORLD.GROUNDS.foreground.position.x += WORLD.AGENT.state.velocity;
+				    WORLD.GROUNDS.background.position.x += WORLD.AGENT.state.velocity/2;
+		    	}
 		    }
 		    
 		    grayFilter.gray = 1 - WORLD.AGENT.state.mood;
