@@ -138,6 +138,7 @@ function createAgent(stage, xpos) {
 						WORLD.thesun.setTexture(getTexture("sunsun"));
 						WORLD.themoon.setTexture(getTexture("moonmoon"));
 						WORLD.EEGGS.ready_go = true;
+						WORLD.GROUNDS.skybox.filters = null;
 					}
 				}
 			}
