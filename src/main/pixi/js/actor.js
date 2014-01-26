@@ -134,7 +134,7 @@ function createAgent(stage, xpos) {
 				playSound("jump");
 				if(WORLD.MOVEMENT == "player") {
 					WORLD.EEGGS.moonmoon_count--;
-					if(WORLD.EEGGS.moonmoon_count < 0) {
+					if(WORLD.EEGGS.moonmoon_count < 0 && !WORLD.EEGGS.ready_go) {
 						WORLD.thesun.setTexture(getTexture("sunsun"));
 						WORLD.themoon.setTexture(getTexture("moonmoon"));
 						WORLD.EEGGS.ready_go = true;
