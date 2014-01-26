@@ -81,7 +81,25 @@ body {
 		return WORLD.TEXTURES[name];
 	}
 	
-	(function() {
+	$(document).ready(function() {
+		// Load the background music
+		AudioContext = window.AudioContext || window.webkitAudioContext;
+		var bgmusic = new Audio();
+		bgmusic.controls = false;
+		bgmusic.autoplay = true;
+		bgmusic.src = "assets/adventure.mp3";
+		bgmusic.addEventListener('ended', function() {
+		    this.currentTime = 0;
+		    this.play();
+		}, false);
+
+		keydown_up = function() {
+			bgmusic.play();
+		}
+		keydown_down = function() {
+			bgmusic.pause();
+		}
+
 		// create an new instance of a pixi stage
 		var stage = new PIXI.Stage(0x0);
 
