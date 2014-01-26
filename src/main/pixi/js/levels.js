@@ -19,12 +19,20 @@ function loadMainstreet(onScreenObjects, from) {
 	if(from && from == "house")
 		WORLD.GROUNDS.foreground.position.x = WORLD.WIDTH / 2 - house.getX();
 	
+	var linwoodhouse = createProp(WORLD.GROUNDS.foreground, 550, "linwoodhouse", 300, 0.275);
+	linwoodhouse.setY(linwoodhouse.getY()+10);
+	if(WORLD.PROGRESS.unlock_linwood || WORLD.SHOW_ALL)
+		linwoodhouse.interact = function() { loadLinwoodHouse(onScreenObjects); };
+	onScreenObjects.push(linwoodhouse);
+	if(from && from == "linwoodhouse")
+		WORLD.GROUNDS.foreground.position.x = WORLD.WIDTH / 2 - linwoodhouse.getX();
+	
 	// only show the library if we have had the quest at some point
 	var show_library = function() {
 		var library = createProp(WORLD.GROUNDS.foreground, 1200, "library", 300, 0.63);
 		library.interact = function() {
 			dialog("[the book has been returned]");
-			useItem("book", 0.15, 0.5);
+			useItem("book", 0.15);
 		};
 		onScreenObjects.push(library);
 		
@@ -99,15 +107,15 @@ function loadMainstreet(onScreenObjects, from) {
 		
 		var talker_gossip = createActor(WORLD.GROUNDS.foreground, 850);
 		talker_gossip.interact = function() {
-			dialog("Heard about what happened, Square. IÕm so sorry.",
+			dialog("Heard about what happened, Square. I'm so sorry.",
 					[
-					 { 'text': "I donÕt really want to talk about it.", 'response': null, 'action': function() {
+					 { 'text': "I don't really want to talk about it.", 'response': null, 'action': function() {
 						 increaseMood(0.05);
-						 WORLD.PROGRESS.questions.push("Heard about what happened, Square. IÕm so sorry.");
+						 WORLD.PROGRESS.questions.push("Heard about what happened, Square. I'm so sorry.");
 					 } },
 					 { 'text': "Thanks.", 'response': null, 'action': function() {
 						 increaseMood(0.05);
-						 WORLD.PROGRESS.questions.push("Heard about what happened, Square. IÕm so sorry.");
+						 WORLD.PROGRESS.questions.push("Heard about what happened, Square. I'm so sorry.");
 					 } },
 					 { 'text': "(silence)", 'response': null, 'action': function() { increaseMood(-0.05); } },
 					 ]);
@@ -116,10 +124,10 @@ function loadMainstreet(onScreenObjects, from) {
 		
 		var talker_goverit = createActor(WORLD.GROUNDS.foreground, 750);
 		talker_goverit.interact = function() {
-			dialog("I know youÕre upset, Square, but you have to get over it. You canÕt let it keep you down forever!",
+			dialog("I know you're upset, Square, but you have to get over it. You can't let it keep you down forever!",
 					[
 					 { 'text': "Screw you.", 'response': null, 'action': function() { increaseMood(-0.1); } },
-					 { 'text': "IÕm trying, okay?", 'response': null, 'action': function() {
+					 { 'text': "I'm trying, okay?", 'response': null, 'action': function() {
 						 increaseMood(0.1);
 						 WORLD.PROGRESS.questions.push("goverit");
 					 } },
@@ -129,7 +137,7 @@ function loadMainstreet(onScreenObjects, from) {
 		onScreenObjects.push(talker_goverit);
 		
 		var talker_weekend = createActor(WORLD.GROUNDS.foreground, 700);
-		talker_goverit.interact = function() {
+		talker_weekend.interact = function() {
 			dialog("Hey, Square! Got any plans for this weekend?",
 					[
 					 { 'text': "Not really.", 'response': null, 'action': function() {
@@ -139,7 +147,23 @@ function loadMainstreet(onScreenObjects, from) {
 					 { 'text': "(silence)", 'response': null, 'action': function() { increaseMood(-0.05); } },
 					 ]);
 		};
-		onScreenObjects.push(talker_goverit);
+		onScreenObjects.push(talker_weekend);
+		
+		var talker_hexstart = createActor(WORLD.GROUNDS.foreground, 950, "pentagon");
+		talker_hexstart.interact = function() {
+			dialog("Square! I just hear Hexagon isn't feeling well. You're neighbors, right? Why don't you stop by and see if you can help?",
+					[
+					 { 'text': "You're right, I should.", 'response': "Here, take this with you.", 'action': function() {
+						 increaseMood(0.05);
+						 WORLD.PROGRESS.questions.push("hexstart");
+						 WORLD.PROGRESS.unlock_linwood = true;
+						 aquireProp(createProp(WORLD.GROUNDS.foreground, 0, "fruitbasket"));
+						 linwoodhouse.interact = function() { loadLinwoodHouse(onScreenObjects); };
+					 } },
+					 { 'text': "I'm not in a good place to be helpful.", 'response': "Well, that's selfish.", 'action': function() { increaseMood(-0.1); } },
+					 ]);
+		};
+		onScreenObjects.push(talker_hexstart);
 	}
 	
 	if(WORLD.AGENT.state.mood > 0.5 || WORLD.SHOW_ALL) {
@@ -199,16 +223,30 @@ function loadHouse(onScreenObjects) {
 	var bedroom = createProp(WORLD.GROUNDS.staticforeground, WORLD.WIDTH * 0.44, "bedroom", WORLD.HEIGHT * 1.2, 0.44);
 	bedroom.setY(WORLD.HEIGHT);
 	bedroom.stage.item.width = WORLD.WIDTH;
-	bedroom.interact = function() {
-		loadMainstreet(onScreenObjects, "house");
-//		dialog("Go outside?",
-//				[
-//				 { 'text': "Yes.", 'response': "Off you go.", 'action': function() { loadMainstreet(onScreenObjects); } },
-//				 { 'text': "No.", 'response': "Not right now.", 'action': function() { } },
-//				 ]);
-	};
+	bedroom.interact = function() { loadMainstreet(onScreenObjects, "house"); };
 	onScreenObjects.push(bedroom);
 	WORLD.AGENT.setX(bedroom.getStageX());
+}
+
+function loadLinwoodHouse(onScreenObjects) {
+	emptyScreenObjects(onScreenObjects);
+	WORLD.MOVEMENT = "player";
+	WORLD.MAP_MIN = 0;
+	WORLD.MAP_MAX = WORLD.WIDTH;
+	
+	var hexint = createProp(WORLD.GROUNDS.staticforeground, WORLD.WIDTH * 0.44, "hexint", WORLD.HEIGHT * 1.2, 0.44);
+	hexint.setY(WORLD.HEIGHT);
+	hexint.stage.item.width = WORLD.WIDTH;
+	hexint.interact = function() { loadMainstreet(onScreenObjects, "linwoodhouse"); };
+	onScreenObjects.push(hexint);
+	WORLD.AGENT.setX(hexint.getStageX());
+	
+	var hex = createActor(WORLD.GROUNDS.foreground, 900, "hexagon");
+	hex.interact = function() {
+		dialog("Thank you Square! You're showing your true angles.");
+		useItem("fruitbasket", 0.15);
+	};
+	onScreenObjects.push(hex);
 }
 
 function loadTherapist(onScreenObjects) {
