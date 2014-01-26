@@ -11,10 +11,6 @@ function clearDialog() {
  * @param choices[] - { "text", "response", action() }
  */
 function dialog(response, choices) {
-	// if the question has already been successful, then don't ask it again
-	if(WORLD.PROGRESS.questions.indexOf(response) > -1)
-		return;
-	
     var panel = $("<div class='panel panel-default'>");
 	panel.append($("<div class='panel-heading'>").text(response));
     

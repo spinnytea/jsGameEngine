@@ -37,15 +37,21 @@ function loadMainstreet(onScreenObjects, from) {
 		onScreenObjects.push(library);
 		
 		var libtalker = createActor(WORLD.GROUNDS.foreground, 1400);
+		if(WORLD.PROGRESS.questions.indexOf("libtalker") == -1)
 		libtalker.interact = function() {
-			dialog("What are you thinking about the future?",
+			dialog("I haven't you seen you in forever! How are you these days?",
 					[
-					 { 'text': "How can I possibly think about a future?", 'response': "Just take it one day at a time. Let's talk about tomorrow.", 'action': function() { increaseMood(-0.05); } },
-					 { 'text': "Hmm. I think I'd like to pick up my hobbies again sometime.", 'response': "That sounds like a great idea. Let's make a plan for that.", 'action': function() {
+					 { 'text': "Oh, I'm doing okay.", 'action': function() {
 						 increaseMood(0.05);
-						 WORLD.PROGRESS.questions.push("What are you thinking about the future?");
+						 WORLD.PROGRESS.questions.push("libtalker");
+						 libtalker.interact = null;
 					 } },
-					 { 'text': "(silence)", 'response': "I'm not going to force you to talk, but it does help.", 'action': function() { increaseMood(-0.05); } },
+					 { 'text': "Not so good, actually...", 'action': function() {
+						 increaseMood(0.05);
+						 WORLD.PROGRESS.questions.push("libtalker");
+						 libtalker.interact = null;
+					 } },
+					 { 'text': "(silence)", 'action': function() { increaseMood(-0.05); } },
 					 ]);
 		};
 		onScreenObjects.push(libtalker);
@@ -53,101 +59,85 @@ function loadMainstreet(onScreenObjects, from) {
 	if(WORLD.PROGRESS.show_library || WORLD.SHOW_ALL)
 		show_library();
 	
-	var talker_feeling = createActor(WORLD.GROUNDS.foreground, -100);
-	talker_feeling.interact = function() {
-		dialog("How are you feeling today?",
+	var talker_sosadhearhappened = createActor(WORLD.GROUNDS.foreground, -100);
+	if(WORLD.PROGRESS.questions.indexOf("sosadhearhappened") == -1)
+	talker_sosadhearhappened.interact = function() {
+		dialog("I haven't you seen you in forever! How are you these days?",
 				[
-				 { 'text': "Kind of grey.", 'response': "We all feel that way sometimes.", 'action': function() {
+				 { 'text': "Thanks. That means a lot.", 'action': function() {
 					 increaseMood(0.05);
-					 WORLD.PROGRESS.questions.push("How are you feeling today?");
+					 WORLD.PROGRESS.questions.push("sosadhearhappened");
+					 talker_sosadhearhappened.interact = null;
 				 } },
-				 { 'text': "Okay, I guess.", 'response': "We all feel that way sometimes.", 'action': function() {
+				 { 'text': "I'm okay, actually. I don't really need anything.", 'action': function() {
 					 increaseMood(0.05);
-					 WORLD.PROGRESS.questions.push("How are you feeling today?");
+					 WORLD.PROGRESS.questions.push("sosadhearhappened");
+					 talker_sosadhearhappened.interact = null;
 				 } },
-				 { 'text': "...", 'response': "I'm not going to force you to talk, but it does help.", 'action': function() { increaseMood(-0.05); } },
+				 { 'text': "(silence)", 'action': function() { increaseMood(-0.05); } },
 				 ]);
 	};
-	onScreenObjects.push(talker_feeling);
+	onScreenObjects.push(talker_sosadhearhappened);
 	
 	if(WORLD.AGENT.state.mood > 0.3 || WORLD.SHOW_ALL) {
-		var talker_blame = createActor(WORLD.GROUNDS.foreground, 470);
-		talker_blame.interact = function() {
-			dialog("Do you blame yourself?",
+		var talker_sillyquestion = createActor(WORLD.GROUNDS.foreground, 470);
+		if(WORLD.PROGRESS.questions.indexOf("sillyquestion") == -1)
+		talker_sillyquestion.interact = function() {
+			dialog("Oh! H-hi, Square. How you doing? Oh, sorry, that's a stupid question!",
 					[
-					 { 'text': "It was all my fault, of course I do.", 'response': "Blaming yourself won't help. You did all you could.", 'action': function() {
-						 increaseMood(0.05);
-						 WORLD.PROGRESS.questions.push("Do you blame yourself?");
+					 { 'text': "You don't have to handle me with kid gloves.", 'action': function() {
+						 increaseMood(0.1);
+						 WORLD.PROGRESS.questions.push("sillyquestion");
+						 talker_sillyquestion.interact = null;
 					 } },
-					 { 'text': "Sometimes.", 'response': "Blaming yourself won't help. You did all you could.", 'action': function() {
+					 { 'text': "Yeah, it kind of was.", 'action': function() {
 						 increaseMood(0.05);
-						 WORLD.PROGRESS.questions.push("Do you blame yourself?");
+						 WORLD.PROGRESS.questions.push("sillyquestion");
+						 talker_sillyquestion.interact = null;
 					 } },
-					 { 'text': "(silence)", 'response': "I'm not going to force you to talk, but it does help.", 'action': function() { increaseMood(-0.05); } },
+					 { 'text': "(silence)", 'action': function() { increaseMood(-0.05); } },
 					 ]);
 		};
-		onScreenObjects.push(talker_blame);
+		onScreenObjects.push(talker_sillyquestion);
 		
-		var talker_dreams = createActor(WORLD.GROUNDS.foreground, 800);
-		talker_dreams.interact = function() {
-			dialog("How are your dreams?",
+		var talker_itsyou = createActor(WORLD.GROUNDS.foreground, 800);
+		talker_itsyou.interact = function() {
+			dialog("Oh, it's you. What do you want?",
 					[
-					 { 'text': "Better. Less frequent, at least.", 'response': "And why do you think that's happening?", 'action': function() {
+					 { 'text': "Nothing. Sorry to bother you.", 'action': function() {
 						 increaseMood(0.05);
-						 WORLD.PROGRESS.questions.push("How are your dreams?");
+						 WORLD.PROGRESS.questions.push("itsyou");
+						 talker_itsyou.interact = null;
 					 } },
-					 { 'text': "Worse...I feel so helpless.", 'response': "And why do you think that's happening?", 'action': function() {
+					 { 'text': "Stop treating me like this. It wasn't my fault!", 'action': function() {
 						 increaseMood(0.05);
-						 WORLD.PROGRESS.questions.push("How are your dreams?");
+						 WORLD.PROGRESS.questions.push("itsyou");
+						 talker_itsyou.interact = null;
 					 } },
-					 { 'text': "(silence)", 'response': "I'm not going to force you to talk, but it does help.", 'action': function() { increaseMood(-0.05); } },
+					 { 'text': "(silence)", 'action': function() { increaseMood(-0.05); } },
 					 ]);
 		};
-		onScreenObjects.push(talker_dreams);
+		onScreenObjects.push(talker_itsyou);
 		
 		var talker_gossip = createActor(WORLD.GROUNDS.foreground, 850);
+		if(WORLD.PROGRESS.questions.indexOf("gossip") == -1)
 		talker_gossip.interact = function() {
 			dialog("Heard about what happened, Square. I'm so sorry.",
 					[
-					 { 'text': "I don't really want to talk about it.", 'response': null, 'action': function() {
+					 { 'text': "I don't really want to talk about it.", 'action': function() {
 						 increaseMood(0.05);
-						 WORLD.PROGRESS.questions.push("Heard about what happened, Square. I'm so sorry.");
+						 WORLD.PROGRESS.questions.push("gossip");
+						 talker_gossip.interact = null;
 					 } },
-					 { 'text': "Thanks.", 'response': null, 'action': function() {
+					 { 'text': "Thanks.", 'action': function() {
 						 increaseMood(0.05);
-						 WORLD.PROGRESS.questions.push("Heard about what happened, Square. I'm so sorry.");
+						 WORLD.PROGRESS.questions.push("gossip");
+						 talker_gossip.interact = null;
 					 } },
-					 { 'text': "(silence)", 'response': null, 'action': function() { increaseMood(-0.05); } },
+					 { 'text': "(silence)", 'action': function() { increaseMood(-0.05); } },
 					 ]);
 		};
 		onScreenObjects.push(talker_gossip);
-		
-		var talker_goverit = createActor(WORLD.GROUNDS.foreground, 750);
-		talker_goverit.interact = function() {
-			dialog("I know you're upset, Square, but you have to get over it. You can't let it keep you down forever!",
-					[
-					 { 'text': "Screw you.", 'response': null, 'action': function() { increaseMood(-0.1); } },
-					 { 'text': "I'm trying, okay?", 'response': null, 'action': function() {
-						 increaseMood(0.1);
-						 WORLD.PROGRESS.questions.push("goverit");
-					 } },
-					 { 'text': "(silence)", 'response': null, 'action': function() { increaseMood(-0.05); } },
-					 ]);
-		};
-		onScreenObjects.push(talker_goverit);
-		
-		var talker_weekend = createActor(WORLD.GROUNDS.foreground, 700);
-		talker_weekend.interact = function() {
-			dialog("Hey, Square! Got any plans for this weekend?",
-					[
-					 { 'text': "Not really.", 'response': null, 'action': function() {
-						 increaseMood(0.05);
-						 WORLD.PROGRESS.questions.push("goverit");
-					 } },
-					 { 'text': "(silence)", 'response': null, 'action': function() { increaseMood(-0.05); } },
-					 ]);
-		};
-		onScreenObjects.push(talker_weekend);
 		
 		var talker_hexstart = createActor(WORLD.GROUNDS.foreground, 950, "pentagon");
 		talker_hexstart.interact = function() {
@@ -167,22 +157,36 @@ function loadMainstreet(onScreenObjects, from) {
 	}
 	
 	if(WORLD.AGENT.state.mood > 0.5 || WORLD.SHOW_ALL) {
-		var talker_loved = createActor(WORLD.GROUNDS.foreground, 900);
-		talker_loved.interact = function() {
-			dialog("Have you been making any efforts to stay in touch with your loved ones?",
+		var talker_goverit = createActor(WORLD.GROUNDS.foreground, 750);
+		if(WORLD.PROGRESS.questions.indexOf("goverit") == -1)
+		talker_goverit.interact = function() {
+			dialog("I know you're upset, Square, but you have to get over it. You can't let it keep you down forever!",
 					[
-					 { 'text': "Not really. It's hard to see the point these days.", 'response': "Don't you notice the difference when you put forth the effort?", 'action': function() {
-						 increaseMood(0.05);
-						 WORLD.PROGRESS.questions.push("Have you been making any efforts to stay in touch with your loved ones?");
-					 } },
-					 { 'text': "Yes, even though it's hard.", 'response': "Don't you notice the difference when you put forth the effort?", 'action': function() {
+					 { 'text': "Screw you.", 'action': function() { increaseMood(-0.1); } },
+					 { 'text': "I'm trying, okay?", 'action': function() {
 						 increaseMood(0.1);
-						 WORLD.PROGRESS.questions.push("Have you been making any efforts to stay in touch with your loved ones?");
+						 WORLD.PROGRESS.questions.push("goverit");
+						 talker_goverit.interact = null;
 					 } },
-					 { 'text': "(silence)", 'response': "I'm not going to force you to talk, but it does help.", 'action': function() { increaseMood(-0.05); } },
+					 { 'text': "(silence)", 'action': function() { increaseMood(-0.05); } },
 					 ]);
 		};
-		onScreenObjects.push(talker_loved);
+		onScreenObjects.push(talker_goverit);
+		
+		var talker_weekend = createActor(WORLD.GROUNDS.foreground, 700);
+		if(WORLD.PROGRESS.questions.indexOf("weekend") == -1)
+		talker_weekend.interact = function() {
+			dialog("Hey, Square! Got any plans for this weekend?",
+					[
+					 { 'text': "Not really.", 'action': function() {
+						 increaseMood(0.05);
+						 WORLD.PROGRESS.questions.push("weekend");
+						 talker_weekend.interact = null;
+					 } },
+					 { 'text': "(silence)", 'action': function() { increaseMood(-0.05); } },
+					 ]);
+		};
+		onScreenObjects.push(talker_weekend);
 	}
 	
 	var libquest = createActor(WORLD.GROUNDS.foreground, 100, "pentagon");
@@ -246,7 +250,7 @@ function loadLinwoodHouse(onScreenObjects) {
 		hex.interact = function() {
 			dialog("Thank you Square! You're showing your true angles.");
 			useItem("fruitbasket", 0.15);
-			hext.interact = function() { dialog("Thank's Square!"); };
+			hex.interact = function() { dialog("Thank's Square!"); };
 			WORLD.PROGRESS.finished_linwood = true;
 		};
 	} else {
@@ -269,6 +273,94 @@ function loadTherapist(onScreenObjects) {
 	};
 	onScreenObjects.push(interior);
 	WORLD.AGENT.setX(interior.getStageX());
+	
+	var interactions = [
+	 function() {
+			dialog("How are you feeling today?",
+					[
+					 { 'text': "Kind of grey.", 'response': "We all feel that way sometimes.", 'action': function() {
+						 increaseMood(0.02);
+						 WORLD.PROGRESS.therapist_question++;
+						 therapist.interact = interactions[WORLD.PROGRESS.therapist_question];
+					 } },
+					 { 'text': "Okay, I guess.", 'response': "We all feel that way sometimes.", 'action': function() {
+						 increaseMood(0.02);
+						 WORLD.PROGRESS.therapist_question++;
+						 therapist.interact = interactions[WORLD.PROGRESS.therapist_question];
+					 } },
+					 { 'text': "...", 'response': "I'm not going to force you to talk, but it does help.", 'action': function() { increaseMood(-0.05); } },
+					 ]);
+	 },
+	 function() {
+			dialog("Do you blame yourself?",
+					[
+					 { 'text': "It was all my fault, of course I do.", 'response': "Blaming yourself won't help. You did all you could.", 'action': function() {
+						 increaseMood(0.02);
+						 WORLD.PROGRESS.therapist_question++;
+						 therapist.interact = interactions[WORLD.PROGRESS.therapist_question];
+					 } },
+					 { 'text': "Sometimes.", 'response': "Blaming yourself won't help. You did all you could.", 'action': function() {
+						 increaseMood(0.02);
+						 WORLD.PROGRESS.therapist_question++;
+						 therapist.interact = interactions[WORLD.PROGRESS.therapist_question];
+					 } },
+					 { 'text': "(silence)", 'response': "I'm not going to force you to talk, but it does help.", 'action': function() { increaseMood(-0.05); } },
+					 ]);
+	 },
+	 function() {
+			dialog("What are you thinking about the future?",
+					[
+					 { 'text': "How can I possibly think about a future?", 'response': "Just take it one day at a time. Let's talk about tomorrow.", 'action': function() {
+						 increaseMood(-0.05);
+						 WORLD.PROGRESS.therapist_question++;
+						 therapist.interact = interactions[WORLD.PROGRESS.therapist_question];
+					 } },
+					 { 'text': "Hmm. I think I'd like to pick up my hobbies again sometime.", 'response': "That sounds like a great idea. Let's make a plan for that.", 'action': function() {
+						 increaseMood(0.02);
+						 WORLD.PROGRESS.therapist_question++;
+						 therapist.interact = interactions[WORLD.PROGRESS.therapist_question];
+					 } },
+					 { 'text': "(silence)", 'response': "I'm not going to force you to talk, but it does help.", 'action': function() { increaseMood(-0.05); } },
+					 ]);
+	 },
+	 function() {
+			dialog("How are your dreams?",
+					[
+					 { 'text': "Better. Less frequent, at least.", 'response': "And why do you think that's happening?", 'action': function() {
+						 increaseMood(0.02);
+						 WORLD.PROGRESS.therapist_question++;
+						 therapist.interact = interactions[WORLD.PROGRESS.therapist_question];
+					 } },
+					 { 'text': "Worse...I feel so helpless.", 'response': "And why do you think that's happening?", 'action': function() {
+						 increaseMood(0.02);
+						 WORLD.PROGRESS.therapist_question++;
+						 therapist.interact = interactions[WORLD.PROGRESS.therapist_question];
+					 } },
+					 { 'text': "(silence)", 'response': "I'm not going to force you to talk, but it does help.", 'action': function() { increaseMood(-0.05); } },
+					 ]);
+	 },
+	 function() {
+			dialog("Have you been making any efforts to stay in touch with your loved ones?",
+					[
+					 { 'text': "Not really. It's hard to see the point these days.", 'response': "Don't you notice the difference when you put forth the effort?", 'action': function() {
+						 increaseMood(0.02);
+						 WORLD.PROGRESS.therapist_question = 0;
+						 therapist.interact = interactions[WORLD.PROGRESS.therapist_question];
+					 } },
+					 { 'text': "Yes, even though it's hard.", 'response': "Don't you notice the difference when you put forth the effort?", 'action': function() {
+						 increaseMood(0.03);
+						 WORLD.PROGRESS.therapist_question = 0;
+						 therapist.interact = interactions[WORLD.PROGRESS.therapist_question];
+					 } },
+					 { 'text': "(silence)", 'response': "I'm not going to force you to talk, but it does help.", 'action': function() { increaseMood(-0.05); } },
+					 ]);
+	 },
+	 ];
+	
+	var therapist = createActor(WORLD.GROUNDS.staticforeground, 270, "circle");
+	therapist.setY(355);
+	therapist.interact = interactions[WORLD.PROGRESS.therapist_question];
+	onScreenObjects.push(therapist);
 }
 
 
