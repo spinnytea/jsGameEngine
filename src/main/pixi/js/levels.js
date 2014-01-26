@@ -62,7 +62,7 @@ function loadMainstreet(onScreenObjects, from) {
 	var talker_sosadhearhappened = createActor(WORLD.GROUNDS.foreground, 40);
 	if(WORLD.PROGRESS.questions.indexOf("sosadhearhappened") == -1)
 	talker_sosadhearhappened.interact = function() {
-		dialog("I haven't you seen you in forever! How are you these days?",
+		dialog("I was so sad to hear what happened. I'm here for you, whatever you need.",
 				[
 				 { 'text': "Thanks. That means a lot.", 'action': function() {
 					 increaseMood(0.05);
@@ -101,6 +101,7 @@ function loadMainstreet(onScreenObjects, from) {
 		onScreenObjects.push(talker_sillyquestion);
 		
 		var talker_itsyou = createActor(WORLD.GROUNDS.foreground, 140);
+		if(WORLD.PROGRESS.questions.indexOf("itsyou") == -1)
 		talker_itsyou.interact = function() {
 			dialog("Oh, it's you. What do you want?",
 					[
@@ -164,7 +165,11 @@ function loadMainstreet(onScreenObjects, from) {
 		talker_goverit.interact = function() {
 			dialog("I know you're upset, Square, but you have to get over it. You can't let it keep you down forever!",
 					[
-					 { 'text': "Screw you.", 'action': function() { increaseMood(-0.1); } },
+					 { 'text': "Screw you.", 'action': function() {
+						 increaseMood(0.1);
+						 WORLD.PROGRESS.questions.push("goverit");
+						 talker_goverit.interact = null;
+					 } },
 					 { 'text': "I'm trying, okay?", 'action': function() {
 						 increaseMood(0.1);
 						 WORLD.PROGRESS.questions.push("goverit");
@@ -403,10 +408,13 @@ function loadStart(onScreenObjects, num) {
 	WORLD.AGENT.state.mood = 0.89;
 	
 	if(!num)
-		num = 1;
+		num = 0;
 	
 	var xanchor = 0.2;
 	switch(num) {
+	case 0:
+		xanchor = 0.325;
+		break;
 	case 1: xanchor = 0.325; break;
 	case 2: xanchor = 0.435; break;
 	case 3:
@@ -419,7 +427,11 @@ function loadStart(onScreenObjects, num) {
 		break;
 	}
 	
-	var slide = createProp(WORLD.GROUNDS.staticforeground, WORLD.WIDTH * xanchor, "P"+num, WORLD.HEIGHT, 1, xanchor);
+	var texturename = "startscreen";
+	if(num > 0)
+		texturename = "P"+num;
+	
+	var slide = createProp(WORLD.GROUNDS.staticforeground, WORLD.WIDTH * xanchor, texturename, WORLD.HEIGHT, 1, xanchor);
 	slide.setY(WORLD.HEIGHT);
 	slide.stage.item.width = WORLD.WIDTH;
 	slide.interact = function() {
