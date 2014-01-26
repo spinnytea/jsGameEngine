@@ -396,6 +396,7 @@ function loadStart(onScreenObjects, num) {
 	WORLD.MOVEMENT = "none";
 	WORLD.MAP_MIN = 0;
 	WORLD.MAP_MAX = WORLD.WIDTH;
+	WORLD.AGENT.state.mood = 0.89;
 	
 	if(!num)
 		num = 1;
@@ -404,8 +405,14 @@ function loadStart(onScreenObjects, num) {
 	switch(num) {
 	case 1: xanchor = 0.325; break;
 	case 2: xanchor = 0.435; break;
-	case 3: xanchor = 0.375; break;
-	case 4: xanchor = 0.47; break;
+	case 3:
+		xanchor = 0.375;
+		WORLD.AGENT.state.mood = 0.5;
+		break;
+	case 4:
+		xanchor = 0.47;
+		WORLD.AGENT.state.mood = 0.1;
+		break;
 	}
 	
 	var slide = createProp(WORLD.GROUNDS.staticforeground, WORLD.WIDTH * xanchor, "P"+num, WORLD.HEIGHT, 1, xanchor);
