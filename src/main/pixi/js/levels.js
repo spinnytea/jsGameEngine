@@ -250,11 +250,11 @@ function loadLinwoodHouse(onScreenObjects) {
 		hex.interact = function() {
 			dialog("Thank you Square! You're showing your true angles.");
 			useItem("fruitbasket", 0.15);
-			hex.interact = function() { dialog("Thank's Square!"); };
+			hex.interact = function() { dialog("Thanks Square!"); };
 			WORLD.PROGRESS.finished_linwood = true;
 		};
 	} else {
-		hex.interact = function() { dialog("Thank's Square!"); };
+		hex.interact = function() { dialog("Thanks Square!"); };
 	}
 	onScreenObjects.push(hex);
 }
@@ -358,6 +358,7 @@ function loadTherapist(onScreenObjects) {
 	 ];
 	
 	var therapist = createActor(WORLD.GROUNDS.staticforeground, 270, "circle");
+	therapist.movement = null;
 	therapist.setY(355);
 	therapist.interact = interactions[WORLD.PROGRESS.therapist_question];
 	onScreenObjects.push(therapist);

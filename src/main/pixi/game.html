@@ -78,6 +78,13 @@ body {
 
 			ENDFLAG: false,
 			SHOWEND: false,
+
+			EEGGS: {
+				jump_state: 0,
+				jumpover_count: 3,
+				moonmoon_count: 5,
+				ready_go: false,
+			},
 	};
 	
 	function getTexture(name) {
@@ -173,6 +180,7 @@ body {
 
         // create the sun
 		var thesun = new PIXI.Sprite(getTexture("sun"));
+        WORLD.thesun = thesun;
 		thesun.anchor.x = 0.5;
 		thesun.anchor.y = 0.5;
 		thesun.position.x = WORLD.WIDTH / 2;
@@ -181,6 +189,7 @@ body {
 		WORLD.GROUNDS.skybox.addChild(thesun);
 
         var themoon = new PIXI.Sprite(getTexture("moon"));
+        WORLD.themoon = themoon;
         themoon.anchor.x = 0.5;
         themoon.anchor.y = 0.5;
         themoon.radius = thesun.radius - 75;
@@ -269,6 +278,8 @@ body {
 		loadMainstreet(onScreenObjects);
 		function updateStep() {
 		    theskyyyy.rotation -= 0.0005;
+		    if(WORLD.EEGGS.ready_go)
+			    theskyyyy.rotation -= 0.004;
 		    thesun.position.x   = thesun.radius  * Math.cos(theskyyyy.rotation) + theskyyyy.position.x;
 		    thesun.position.y   = thesun.radius  * Math.sin(theskyyyy.rotation) + theskyyyy.position.y;
             themoon.position.x  = themoon.radius * Math.cos(theskyyyy.rotation+Math.sin(theskyyyy.rotation*0.15+2)*0.50+Math.PI) + theskyyyy.position.x;
@@ -292,7 +303,13 @@ body {
 		    	alertbox.position.x = WORLD.AGENT.getX();
 		    	alertbox.position.y = WORLD.AGENT.getY() - WORLD.AGENT.base.height - 5;
 		    	alertbox.visible = true;
+		    	if(WORLD.EEGGS.jump_state == 0) WORLD.EEGGS.jump_state = 1;
 		    });
+		    
+		    if(WORLD.EEGGS.jump_state == 1 && alertbox.visible == false) {
+		    	WORLD.EEGGS.jump_state = 2;
+		    	WORLD.EEGGS.jumpover_count--;
+		    }
 		    
 		    grayFilter.gray = 1 - WORLD.AGENT.state.mood;
 		    if(WORLD.AGENT.state.mood <= 0.2) update_mood_meter(0);

@@ -34,7 +34,48 @@ function createActor(stage, xpos, texturename) {
 	// set the height of the shadow
 	obj.stage.shadow.height = obj.base.height / 4;
 	
+	obj.state.movement = {
+		original_x: obj.stage.circle.position.x,
+		max_dist: 32,
+		move_chance: 0.01,
+		move_step: 0,
+		move_maxsteps: 40,
+		move_speed: 0, // modifier
+	};
+	obj.movement = function() {
+		// if we are already moving, then keep moving
+		// if we are not moving, then there is a chance to start
+		if(obj.state.movement.move_step > 0 || Math.random() < obj.state.movement.move_chance) {
+			// if we are starting a move, then randomize the movement speed modifier
+			if(obj.state.movement.move_step == 0) {
+				obj.state.movement.move_speed = Math.random() * 0.5 + 0.2;
+				
+				// change the randomness of the direction flip based on distance away from the original
+				if(Math.random() > (obj.state.movement.original_x-obj.getX())/(obj.state.movement.max_dist*2) + 0.5)
+					obj.state.movement.move_speed *= -1;
+			}
+			
+			// first movment step will be 1
+			obj.state.movement.move_step++;
+			// if we get to the end of the movement step count, then reset the movement state
+			if(obj.state.movement.move_step >= obj.state.movement.move_maxsteps) {
+				obj.state.movement.is_moving = false;
+				obj.state.movement.move_step = 0;
+			} else {
+				// calculate the speed (interpolate the positive side of a sin wav
+				var speed = Math.sin(obj.state.movement.move_step*Math.PI/obj.state.movement.move_maxsteps);
+				obj.setX(
+						Math.min(obj.state.movement.original_x + obj.state.movement.max_dist,
+								Math.max(obj.state.movement.original_x - obj.state.movement.max_dist,
+										obj.getX() + speed * obj.state.movement.move_speed)));
+			}
+		}
+	}
+	
 	obj.update = function() {
+		if(obj.movement)
+			obj.movement();
+		
 		//// step the breathing
 	    // update breathing state
 	    obj.state.breathingStep += obj.state.activity*obj.state.breathingVel;
@@ -70,6 +111,7 @@ function createActor(stage, xpos, texturename) {
 
 function createAgent(stage, xpos) {
 	var agent = createActor(stage, xpos, "square");
+	agent.movement = null;
 	
 	// scalar value from 0 to 1
 	agent.state.mood      = 0.1;
@@ -88,13 +130,25 @@ function createAgent(stage, xpos) {
 			agent.state.doJump   = false;
 			agent.state.onGround = false;
 			increaseMood(0.001, 0.9);
-			playSound("jump");
+			if(WORLD.EEGGS.jumpover_count < 0) {
+				playSound("jump");
+				if(WORLD.MOVEMENT == "player") {
+					WORLD.EEGGS.moonmoon_count--;
+					if(WORLD.EEGGS.moonmoon_count < 0) {
+						WORLD.thesun.setTexture(getTexture("sunsun"));
+						WORLD.themoon.setTexture(getTexture("moonmoon"));
+						WORLD.EEGGS.ready_go = true;
+						WORLD.GROUNDS.skybox.filters = null;
+					}
+				}
+			}
 		}
 		if(!agent.state.onGround) {
 			agent.state.jump += 0.1;
 			if(WORLD.FLOOR - Math.sin(agent.state.jump) >= WORLD.FLOOR) {
 				agent.state.jump = 0;
 				agent.state.onGround = true;
+				WORLD.EEGGS.jump_state = 0;
 			}
 		}
 
