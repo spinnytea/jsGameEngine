@@ -88,7 +88,7 @@ function createAgent(stage, xpos) {
 			agent.state.doJump   = false;
 			agent.state.onGround = false;
 			increaseMood(0.001, 0.9);
-			
+			playSound("jump");
 		}
 		if(!agent.state.onGround) {
 			agent.state.jump += 0.1;

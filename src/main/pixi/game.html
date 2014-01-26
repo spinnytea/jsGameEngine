@@ -65,6 +65,7 @@ body {
 			AGENT:    null,
 			TEXTURES:   {},
 			GROUNDS:    {},
+			SOUNDS:		{},
 			
 			// some other state infromation
 			PROGRESS: {
@@ -82,9 +83,17 @@ body {
 		return WORLD.TEXTURES[name];
 	}
 	
+	function playSound(sound) {
+		var source = WORLD.SOUNDS.context.createBufferSource();
+		source.buffer = WORLD.SOUNDS[sound];
+		source.connect(WORLD.SOUNDS.context.destination);
+		source.start(0);
+	}
+	
 	$(document).ready(function() {
 		// Load the background music
 		AudioContext = window.AudioContext || window.webkitAudioContext;
+		WORLD.SOUNDS.context = new AudioContext();
 		var bgmusic = new Audio();
 		bgmusic.controls = false;
 		bgmusic.autoplay = true;
@@ -93,7 +102,17 @@ body {
 		    this.currentTime = 0;
 		    this.play();
 		}, false);
-
+		
+		var request = new XMLHttpRequest();
+		request.open("GET", "assets/jump.wav", true);
+		request.responseType = "arraybuffer";
+		request.onload = function() {
+			WORLD.SOUNDS.context.decodeAudioData(request.response, function(buffer) {
+				WORLD.SOUNDS.jump = buffer;
+			});
+		};
+		request.send();
+		
 		keydown_up = function() {
 			bgmusic.play();
 		}
