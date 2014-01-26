@@ -17,8 +17,6 @@ Mechanics
 TODO
  - indicate when there is something to interact with
  - put a plant in your house that you can take to the therapist
- - make the agent a square
- - limit some of the dialogs to one time only
 
 
 What is implemented
@@ -29,3 +27,5 @@ What is implemented
  - basic keys, mapped to player movement
  - interact with objects on screen via interact method
  - basic dialog box
+ . - limit some of the dialogs to one time only
+ 

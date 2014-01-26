@@ -23,22 +23,78 @@ function loadMainstreet(onScreenObjects, from) {
 			useItem("book", 0.15, 0.5);
 		};
 		onScreenObjects.push(library);
+		
+		var libtalker = createActor(WORLD.GROUNDS.foreground, 1400);
+		libtalker.interact = function() {
+			dialog("What are you thinking about the future?",
+					[
+					 { 'text': "How can I possibly think about a future?", 'response': "Just take it one day at a time. Let's talk about tomorrow.", 'action': function() { increaseMood(-0.05, 1); } },
+					 { 'text': "Hmm. I think I'd like to pick up my hobbies again sometime.", 'response': "That sounds like a great idea. Let's make a plan for that.", 'action': function() {
+						 increaseMood(0.05, 0.3);
+						 WORLD.PROGRESS.questions.push("What are you thinking about the future?");
+					 } },
+					 { 'text': "(silence)", 'response': "I'm not going to force you to talk, but it does help.", 'action': function() { increaseMood(-0.05, 1); } },
+					 ]);
+		};
+		onScreenObjects.push(libtalker);
 	};
 	if(WORLD.PROGRESS.show_library)
 		show_library();
 	
-	var talker = createActor(WORLD.GROUNDS.foreground, 470);
-	talker.interact = function() {
+	var talker_feeling = createActor(WORLD.GROUNDS.foreground, -100);
+	talker_feeling.interact = function() {
 		dialog("How are you feeling today?",
 				[
-				 { 'text': "Kind of grey.", 'response': "We all feel that way sometimes.", 'action': function() { increaseMood(0.05, 0.3); } },
-				 { 'text': "Okay, I guess.", 'response': "We all feel that way sometimes.", 'action': function() { increaseMood(0.05, 0.3); } },
+				 { 'text': "Kind of grey.", 'response': "We all feel that way sometimes.", 'action': function() {
+					 increaseMood(0.05, 0.3);
+					 WORLD.PROGRESS.questions.push("How are you feeling today?");
+				 } },
+				 { 'text': "Okay, I guess.", 'response': "We all feel that way sometimes.", 'action': function() {
+					 increaseMood(0.05, 0.3);
+					 WORLD.PROGRESS.questions.push("How are you feeling today?");
+				 } },
 				 { 'text': "...", 'response': "I'm not going to force you to talk, but it does help.", 'action': function() { increaseMood(-0.05, 1); } },
 				 ]);
 	};
-	onScreenObjects.push(talker);
+	onScreenObjects.push(talker_feeling);
 	
-	var libquest = createActor(WORLD.GROUNDS.foreground, 100);
+	if(WORLD.AGENT.state.mood > 0.3) {
+		var talker_blame = createActor(WORLD.GROUNDS.foreground, 470);
+		talker_blame.interact = function() {
+			dialog("Do you blame yourself?",
+					[
+					 { 'text': "It was all my fault, of course I do.", 'response': "Blaming yourself won't help. You did all you could.", 'action': function() {
+						 increaseMood(0.05, 0.5);
+						 WORLD.PROGRESS.questions.push("Do you blame yourself?");
+					 } },
+					 { 'text': "Sometimes.", 'response': "Blaming yourself won't help. You did all you could.", 'action': function() {
+						 increaseMood(0.05, 0.5);
+						 WORLD.PROGRESS.questions.push("Do you blame yourself?");
+					 } },
+					 { 'text': "(silence)", 'response': "I'm not going to force you to talk, but it does help.", 'action': function() { increaseMood(-0.05, 1); } },
+					 ]);
+		};
+		onScreenObjects.push(talker_blame);
+		
+		var talker_dreams = createActor(WORLD.GROUNDS.foreground, 800);
+		talker_dreams.interact = function() {
+			dialog("How are your dreams?",
+					[
+					 { 'text': "Better. Less frequent, at least.", 'response': "And why do you think that's happening?", 'action': function() {
+						 increaseMood(0.05, 0.5);
+						 WORLD.PROGRESS.questions.push("How are your dreams?");
+					 } },
+					 { 'text': "Worse...I feel so helpless.", 'response': "And why do you think that's happening?", 'action': function() {
+						 increaseMood(0.05, 0.5);
+						 WORLD.PROGRESS.questions.push("How are your dreams?");
+					 } },
+					 { 'text': "(silence)", 'response': "I'm not going to force you to talk, but it does help.", 'action': function() { increaseMood(-0.05, 1); } },
+					 ]);
+		};
+		onScreenObjects.push(talker_dreams);
+	}
+	
+	var libquest = createActor(WORLD.GROUNDS.foreground, 100, "pentagon");
 	// only allow the quest if you haven't started
 	if(!WORLD.PROGRESS.show_library)
 	libquest.interact = function() {
@@ -53,7 +109,7 @@ function loadMainstreet(onScreenObjects, from) {
 					}
 					libquest.interact = null;
 				 } },
-				 { 'text': "Okay, I guess.", 'response': "Oh, okay then.", 'action': function() { increaseMood(-0.05, 0.3); } },
+				 { 'text': "I don't think I have the time, sorry.", 'response': "Oh, okay then.", 'action': function() { increaseMood(-0.05, 0.3); } },
 				 ]);
 	};
 	onScreenObjects.push(libquest);
