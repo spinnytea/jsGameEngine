@@ -358,7 +358,7 @@ function loadTherapist(onScreenObjects) {
 	 ];
 	
 	var therapist = createActor(WORLD.GROUNDS.staticforeground, 270, "circle");
-	threapist.movement = null;
+	therapist.movement = null;
 	therapist.setY(355);
 	therapist.interact = interactions[WORLD.PROGRESS.therapist_question];
 	onScreenObjects.push(therapist);
