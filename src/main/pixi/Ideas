@@ -12,11 +12,12 @@ Mechanics
  - As your mood improves, more things appear on screen (or disappear)
  - Quests (trigger some series of tasks that need to be completed)
  . - Library book
+ . - Take plant to friend
 
 
 TODO
  - indicate when there is something to interact with
- - put a plant in your house that you can take to the therapist
+ - add more interactions (more actors on screen, more quests)
 
 
 What is implemented

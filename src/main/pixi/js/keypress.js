@@ -19,7 +19,7 @@ onkeydown = function(e) {
 	case 39:	keydown_right();		break;
 	case 40:	keydown_down();			break;
 	case 70:	keydown_interact();		break;
-	case 32:    keydown_jump();     	break;
+	case 66:    keydown_jump();     	break;
 	default:
 		console.log("key: " + event.keyCode);
 		break;

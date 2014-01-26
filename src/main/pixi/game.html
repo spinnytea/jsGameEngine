@@ -46,17 +46,27 @@ body {
 	<script type="text/javascript">
 	// some static information about the world
 	var WORLD = {
+			// a flag for debugging possitions
+			SHOW_ALL: false,
+			
+			// positional information
 			WIDTH:  960,
 			HEIGHT: 540,
 			FLOOR:  400,
 			MAP_MIN:  0,
 			MAP_MAX: 0,
+			MOVEMENT: 'world',
+			
+			// updating at a constant time-based rate (tries to avoid lag)
 			STEP_DURATION:   16,
 			PREVIOUS_UPDATE: -1,
+			
+			// handles to allow data access
 			AGENT:    null,
 			TEXTURES:   {},
 			GROUNDS:    {},
-			MOVEMENT: 'world',
+			
+			// some other state infromation
 			PROGRESS: {
 				show_library: false,
 				questions: [],
