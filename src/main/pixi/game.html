@@ -81,7 +81,7 @@ body {
 			
 			SLEEPSTATE: {
 				filter: null,
-				step: 0, // if the step is not 1, then the filter is in use
+				step: 0, // if the step is not 0, then we are sleeping
 			},
 
 			EEGGS: {
@@ -124,7 +124,7 @@ body {
 		var bgmusic = new Audio();
 		bgmusic.controls = false;
 		bgmusic.autoplay = true;
-		bgmusic.src = "assets/adventure.mp3";
+		bgmusic.src = "assets/piano1.ogg";
 		bgmusic.addEventListener('ended', function() {
 		    this.currentTime = 0;
 		    this.play();
@@ -362,7 +362,6 @@ body {
             if(WORLD.AGENT.state.mood >= 0.9 && !WORLD.SHOWEND) {
             	WORLD.ENDFLAG = true;
             }
-
 		}
 		
 		// the animation step is called whenever the screen is supposed to draw
