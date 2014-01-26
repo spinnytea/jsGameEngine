@@ -242,10 +242,16 @@ function loadLinwoodHouse(onScreenObjects) {
 	WORLD.AGENT.setX(hexint.getStageX());
 	
 	var hex = createActor(WORLD.GROUNDS.foreground, 900, "hexagon");
-	hex.interact = function() {
-		dialog("Thank you Square! You're showing your true angles.");
-		useItem("fruitbasket", 0.15);
-	};
+	if(!WORLD.PROGRESS.finished_linwood) {
+		hex.interact = function() {
+			dialog("Thank you Square! You're showing your true angles.");
+			useItem("fruitbasket", 0.15);
+			hext.interact = function() { dialog("Thank's Square!"); };
+			WORLD.PROGRESS.finished_linwood = true;
+		};
+	} else {
+		hex.interact = function() { dialog("Thank's Square!"); };
+	}
 	onScreenObjects.push(hex);
 }
 
