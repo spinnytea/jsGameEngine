@@ -235,7 +235,7 @@ function loadHouse(onScreenObjects) {
 
 	//add go to bed choice
 	var bed = createActor(WORLD.GROUNDS.staticforeground, 670, "circle");
-	bed.movement = null;
+	bed.update = null;
 	bed.setY(340);
 	bed.interact = function() {
 		dialog("It's late. What to go to bed?",
@@ -251,7 +251,8 @@ function loadHouse(onScreenObjects) {
 		 { 'text': "...", 'response': "I'm not going to force you to talk, but it does help.", 'action': function() { increaseMood(-0.05); } },
 		 ]);
 	};
-	bed.visible = false;
+	bed.stage.circle.visible = false;
+	bed.stage.shadow.visible = false;
 	if(1) {
 		onScreenObjects.push(bed);
 	}
@@ -388,6 +389,40 @@ function loadTherapist(onScreenObjects) {
 	therapist.setY(355);
 	therapist.interact = interactions[WORLD.PROGRESS.therapist_question];
 	onScreenObjects.push(therapist);
+}
+
+function loadStart(onScreenObjects, num) {
+	emptyScreenObjects(onScreenObjects);
+	WORLD.MOVEMENT = "none";
+	WORLD.MAP_MIN = 0;
+	WORLD.MAP_MAX = WORLD.WIDTH;
+	
+	if(!num)
+		num = 1;
+	
+	var xanchor = 0.2;
+	switch(num) {
+	case 1: xanchor = 0.325; break;
+	case 2: xanchor = 0.435; break;
+	case 3: xanchor = 0.375; break;
+	case 4: xanchor = 0.47; break;
+	}
+	
+	var slide = createProp(WORLD.GROUNDS.staticforeground, WORLD.WIDTH * xanchor, "P"+num, WORLD.HEIGHT, 1, xanchor);
+	slide.setY(WORLD.HEIGHT);
+	slide.stage.item.width = WORLD.WIDTH;
+	slide.interact = function() {
+		if(num == 4) {
+			WORLD.AGENT.stage.circle.visible = true;
+			WORLD.AGENT.stage.shadow.visible = true;
+			loadHouse(onScreenObjects);
+		} else
+			loadStart(onScreenObjects, num+1);
+	};
+	onScreenObjects.push(slide);
+	WORLD.AGENT.setX(slide.getStageX());
+	WORLD.AGENT.stage.circle.visible = false;
+	WORLD.AGENT.stage.shadow.visible = false;
 }
 
 
