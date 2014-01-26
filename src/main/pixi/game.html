@@ -80,11 +80,11 @@ body {
 		WORLD.GROUNDS.background = new PIXI.DisplayObjectContainer();
 		WORLD.GROUNDS.staticforeground = new PIXI.DisplayObjectContainer();
 		WORLD.GROUNDS.foreground = new PIXI.DisplayObjectContainer();
-		stage.addChild(WORLD.GROUNDS.skybox);
-		stage.addChild(WORLD.GROUNDS.background);
-		stage.addChild(WORLD.GROUNDS.staticforeground);
-		stage.addChild(WORLD.GROUNDS.foreground);
-		stage.filters = [grayFilter];
+		WORLD.GROUNDS.playerplain = new PIXI.DisplayObjectContainer();
+		for(i in WORLD.GROUNDS) {
+			stage.addChild(WORLD.GROUNDS[i]);
+			WORLD.GROUNDS[i].filters = [grayFilter];
+		}
 		
 		var mountain = new PIXI.TilingSprite(getTexture("mountain"), 3600, 400);
 		mountain.position.x = -1200;
@@ -151,7 +151,7 @@ body {
 		    }
 		}
 
-		WORLD.AGENT = createAgent(stage, WORLD.WIDTH/2);
+		WORLD.AGENT = createAgent(WORLD.GROUNDS.playerplain, WORLD.WIDTH/2);
 		keydown_interact = function() {
 			// find an element that is near the player
 		    check_interact(function() {
@@ -169,6 +169,31 @@ body {
 		alertbox.anchor.y = 1;
 		alertbox.visible = false;
 		stage.addChild(alertbox);
+
+		var unhappy   = new PIXI.Sprite(getTexture("unhappy"));
+		var unhappy_g = new PIXI.Sprite(getTexture("unhappy_gray"));
+		var medium    = new PIXI.Sprite(getTexture("medium"));
+		var medium_g  = new PIXI.Sprite(getTexture("medium_gray"));
+		var happy     = new PIXI.Sprite(getTexture("happy"));
+		var happy_g   = new PIXI.Sprite(getTexture("happy_gray"));
+		var moodmeter = [unhappy, medium, happy, unhappy_g, medium_g, happy_g];
+		for(i = 0; i < 3; i++) {
+			moodmeter[i+0].width = moodmeter[i+0].height = 40;
+			moodmeter[i+0].visible = false;
+			moodmeter[i+3].width = moodmeter[i+3].height = 40;
+			moodmeter[i+0].position.x = WORLD.WIDTH  - (moodmeter[i+0].width * (3-i) * 1.5);
+			moodmeter[i+3].position.x = WORLD.WIDTH  - (moodmeter[i+3].width * (3-i) * 1.5);
+			moodmeter[i+0].position.y = WORLD.HEIGHT - (moodmeter[i+0].height*1.5);
+			moodmeter[i+3].position.y = WORLD.HEIGHT - (moodmeter[i+3].height*1.5);
+			stage.addChild(moodmeter[i+3]);
+			stage.addChild(moodmeter[i+0]);
+		}
+		update_mood_meter = function(i) {
+			for(j in moodmeter) moodmeter[j].visible = false;
+			for(k = 3; k < 6; k++) if(k != (i+3)) moodmeter[k].visible = true;
+			moodmeter[i].visible = true;
+		}
+		update_mood_meter(2);
 
 		loadMainstreet(onScreenObjects);
 		function updateStep() {
@@ -199,6 +224,10 @@ body {
 		    });
 		    
 		    grayFilter.gray = 1 - WORLD.AGENT.state.mood;
+		    if(WORLD.AGENT.state.mood <= 0.2) update_mood_meter(0);
+		    else if(WORLD.AGENT.state.mood > 0.2 && WORLD.AGENT.state.mood <= 0.8) update_mood_meter(1);
+		    else update_mood_meter(2);
+
 		    for(i in onScreenObjects)
 		    	if(onScreenObjects[i].update)
 			    	onScreenObjects[i].update();
