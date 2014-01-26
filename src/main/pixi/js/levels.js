@@ -235,7 +235,7 @@ function loadHouse(onScreenObjects) {
 
 	//add go to bed choice
 	var bed = createActor(WORLD.GROUNDS.staticforeground, 670, "circle");
-	bed.movement = null;
+	bed.update = null;
 	bed.setY(340);
 	bed.interact = function() {
 		dialog("It's late. What to go to bed?",
@@ -251,7 +251,8 @@ function loadHouse(onScreenObjects) {
 		 { 'text': "...", 'response': "I'm not going to force you to talk, but it does help.", 'action': function() { increaseMood(-0.05); } },
 		 ]);
 	};
-	bed.visible = false;
+	bed.stage.circle.visible = false;
+	bed.stage.shadow.visible = false;
 	if(1) {
 		onScreenObjects.push(bed);
 	}
