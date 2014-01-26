@@ -75,6 +75,10 @@ body {
 				finished_linwood: false,
 				therapist_question: 0,
 			},
+			EEGGS: {
+				jump_state: 0,
+				jumpover_count: 3,
+			},
 	};
 	
 	function getTexture(name) {
@@ -271,7 +275,13 @@ body {
 		    	alertbox.position.x = WORLD.AGENT.getX();
 		    	alertbox.position.y = WORLD.AGENT.getY() - WORLD.AGENT.base.height - 5;
 		    	alertbox.visible = true;
+		    	if(WORLD.EEGGS.jump_state == 0) WORLD.EEGGS.jump_state = 1;
 		    });
+		    
+		    if(WORLD.EEGGS.jump_state == 1 && alertbox.visible == false) {
+		    	WORLD.EEGGS.jump_state = 2;
+		    	WORLD.EEGGS.jumpover_count--;
+		    }
 		    
 		    grayFilter.gray = 1 - WORLD.AGENT.state.mood;
 		    if(WORLD.AGENT.state.mood <= 0.2) update_mood_meter(0);
