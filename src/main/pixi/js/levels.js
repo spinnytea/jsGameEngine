@@ -5,21 +5,21 @@ function loadMainstreet(onScreenObjects, from) {
 	WORLD.MAP_MIN = -2400;
 	WORLD.MAP_MAX = 2400;
 
-	var therapist = createProp(WORLD.GROUNDS.foreground, -300, "therapist", 400, 0.7);
+	var therapist = createProp(WORLD.GROUNDS.foreground, -300, "therapist", 400, 0.986, 0.7);
 	therapist.interact = function() { loadTherapist(onScreenObjects); };
 	onScreenObjects.push(therapist);
 	if(from && from == "therapist")
 		WORLD.GROUNDS.foreground.position.x = WORLD.WIDTH / 2 - therapist.getX();
 
-	onScreenObjects.push(createProp(WORLD.GROUNDS.foreground, 0, "tree", 300));
+	onScreenObjects.push(createProp(WORLD.GROUNDS.foreground, 0, "tree", 0.736, 300));
 	
-	var house = createProp(WORLD.GROUNDS.foreground, 270, "house", 250, 0.3);
+	var house = createProp(WORLD.GROUNDS.foreground, 270, "house", 250, 0.756, 0.3);
 	house.interact = function() { loadHouse(onScreenObjects); };
 	onScreenObjects.push(house);
 	if(from && from == "house")
 		WORLD.GROUNDS.foreground.position.x = WORLD.WIDTH / 2 - house.getX();
 	
-	var linwoodhouse = createProp(WORLD.GROUNDS.foreground, 550, "linwoodhouse", 300, 0.275);
+	var linwoodhouse = createProp(WORLD.GROUNDS.foreground, 550, "linwoodhouse", 300, 1.977, 0.275);
 	linwoodhouse.setY(linwoodhouse.getY()+10);
 	if(WORLD.PROGRESS.unlock_linwood || WORLD.SHOW_ALL)
 		linwoodhouse.interact = function() { loadLinwoodHouse(onScreenObjects); };
@@ -29,7 +29,7 @@ function loadMainstreet(onScreenObjects, from) {
 	
 	// only show the library if we have had the quest at some point
 	var show_library = function() {
-		var library = createProp(WORLD.GROUNDS.foreground, 1200, "library", 300, 0.63);
+		var library = createProp(WORLD.GROUNDS.foreground, 1200, "library", 300, 1.396, 0.63);
 		library.interact = function() {
 			dialog("[the book has been returned]");
 			useItem("book", 0.15);
@@ -224,7 +224,7 @@ function loadHouse(onScreenObjects) {
 	WORLD.MAP_MIN = 330;
 	WORLD.MAP_MAX = 670;
 	
-	var bedroom = createProp(WORLD.GROUNDS.staticforeground, WORLD.WIDTH * 0.44, "bedroom", WORLD.HEIGHT * 1.2, 0.44);
+	var bedroom = createProp(WORLD.GROUNDS.staticforeground, WORLD.WIDTH * 0.44, "bedroom", WORLD.HEIGHT * 1.2, 1, 0.44);
 	bedroom.setY(WORLD.HEIGHT);
 	bedroom.stage.item.width = WORLD.WIDTH;
 	bedroom.interact = function() { loadMainstreet(onScreenObjects, "house"); };
@@ -238,7 +238,7 @@ function loadLinwoodHouse(onScreenObjects) {
 	WORLD.MAP_MIN = 0;
 	WORLD.MAP_MAX = WORLD.WIDTH;
 	
-	var hexint = createProp(WORLD.GROUNDS.staticforeground, WORLD.WIDTH * 0.44, "hexint", WORLD.HEIGHT * 1.2, 0.44);
+	var hexint = createProp(WORLD.GROUNDS.staticforeground, WORLD.WIDTH * 0.44, "hexint", WORLD.HEIGHT * 1.2, 1, 0.44);
 	hexint.setY(WORLD.HEIGHT);
 	hexint.stage.item.width = WORLD.WIDTH;
 	hexint.interact = function() { loadMainstreet(onScreenObjects, "linwoodhouse"); };
@@ -265,7 +265,7 @@ function loadTherapist(onScreenObjects) {
 	WORLD.MAP_MIN = 0;
 	WORLD.MAP_MAX = WORLD.WIDTH;
 	
-	var interior = createProp(WORLD.GROUNDS.staticforeground, WORLD.WIDTH * 0.5, "therapistinterior", WORLD.HEIGHT * 1.2);
+	var interior = createProp(WORLD.GROUNDS.staticforeground, WORLD.WIDTH * 0.5, "therapistinterior", WORLD.HEIGHT * 1.2, 1);
 	interior.setY(WORLD.HEIGHT);
 	interior.stage.item.width = WORLD.WIDTH;
 	interior.interact = function() {

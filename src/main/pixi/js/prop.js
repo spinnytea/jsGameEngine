@@ -1,4 +1,4 @@
-function createProp(stage, xpos, texturename, height, xanchor)
+function createProp(stage, xpos, texturename, height, ratio, xanchor)
 {
 	var obj = {};
 	
@@ -20,7 +20,7 @@ function createProp(stage, xpos, texturename, height, xanchor)
 	obj.stage.item = item;
 	
 	if(height) {
-		var ratio = item.width/item.height;
+//		var ratio = item.width/item.height;
 		item.width = ratio*height;
 		item.height = height;
 	}
