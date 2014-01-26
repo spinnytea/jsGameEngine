@@ -93,6 +93,14 @@ body {
 		return WORLD.TEXTURES[name];
 	}
 	
+	// time of day as a float from 0 to 1
+	function getInGameTime() {
+		var inter = -1 * WORLD.theskyyyy.rotation / (Math.PI*2) + 0.25;
+		if(inter > 1)
+			inter -= 1;
+		return inter;
+	}
+	
 	function playSound(sound) {
 		var source = WORLD.SOUNDS.context.createBufferSource();
 		source.buffer = WORLD.SOUNDS[sound];
@@ -172,6 +180,7 @@ body {
 		
 		// create the sky
 		var theskyyyy = new PIXI.Sprite(getTexture("THE_SKYYYYYYYYY"));
+		WORLD.theskyyyy = theskyyyy;
 		theskyyyy.anchor.x = 0.5;
 		theskyyyy.anchor.y = 0.5;
 		theskyyyy.position.x = WORLD.WIDTH / 2;
@@ -283,6 +292,8 @@ body {
 		    theskyyyy.rotation += WORLD.AGENT.state.mood * 0.0008;
 		    if(WORLD.EEGGS.ready_go)
 			    theskyyyy.rotation -= 0.004;
+		    if(theskyyyy.rotation < Math.PI*-2)
+		    	theskyyyy.rotation += Math.PI*2;
 		    thesun.position.x   = thesun.radius  * Math.cos(theskyyyy.rotation) + theskyyyy.position.x;
 		    thesun.position.y   = thesun.radius  * Math.sin(theskyyyy.rotation) + theskyyyy.position.y;
             themoon.position.x  = themoon.radius * Math.cos(theskyyyy.rotation+Math.sin(theskyyyy.rotation*0.15+2)*0.50+Math.PI) + theskyyyy.position.x;
