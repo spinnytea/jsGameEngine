@@ -139,6 +139,11 @@ function createAgent(stage, xpos) {
 						WORLD.themoon.setTexture(getTexture("moonmoon"));
 						WORLD.EEGGS.ready_go = true;
 						WORLD.GROUNDS.skybox.filters = null;
+						
+						WORLD.bgmusic.pause();
+						WORLD.bgmusic.src = "assets/adventure.mp3";
+						WORLD.bgmusic.currentTime = 0;
+						WORLD.bgmusic.play();
 					}
 				}
 			}

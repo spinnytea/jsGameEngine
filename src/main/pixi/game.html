@@ -122,6 +122,7 @@ body {
 		AudioContext = window.AudioContext || window.webkitAudioContext;
 		WORLD.SOUNDS.context = new AudioContext();
 		var bgmusic = new Audio();
+		WORLD.bgmusic = bgmusic;
 		bgmusic.controls = false;
 		bgmusic.autoplay = true;
 		bgmusic.src = "assets/piano1.ogg";
