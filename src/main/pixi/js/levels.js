@@ -391,6 +391,40 @@ function loadTherapist(onScreenObjects) {
 	onScreenObjects.push(therapist);
 }
 
+function loadStart(onScreenObjects, num) {
+	emptyScreenObjects(onScreenObjects);
+	WORLD.MOVEMENT = "none";
+	WORLD.MAP_MIN = 0;
+	WORLD.MAP_MAX = WORLD.WIDTH;
+	
+	if(!num)
+		num = 1;
+	
+	var xanchor = 0.2;
+	switch(num) {
+	case 1: xanchor = 0.325; break;
+	case 2: xanchor = 0.435; break;
+	case 3: xanchor = 0.375; break;
+	case 4: xanchor = 0.47; break;
+	}
+	
+	var slide = createProp(WORLD.GROUNDS.staticforeground, WORLD.WIDTH * xanchor, "P"+num, WORLD.HEIGHT, 1, xanchor);
+	slide.setY(WORLD.HEIGHT);
+	slide.stage.item.width = WORLD.WIDTH;
+	slide.interact = function() {
+		if(num == 4) {
+			WORLD.AGENT.stage.circle.visible = true;
+			WORLD.AGENT.stage.shadow.visible = true;
+			loadHouse(onScreenObjects);
+		} else
+			loadStart(onScreenObjects, num+1);
+	};
+	onScreenObjects.push(slide);
+	WORLD.AGENT.setX(slide.getStageX());
+	WORLD.AGENT.stage.circle.visible = false;
+	WORLD.AGENT.stage.shadow.visible = false;
+}
+
 
 function emptyScreenObjects(onScreenObjects) {
 	for(i in onScreenObjects)
