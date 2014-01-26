@@ -1,0 +1,1 @@
+web: bundle exec rackup src/main/pixi/config.ru -p $PORT
