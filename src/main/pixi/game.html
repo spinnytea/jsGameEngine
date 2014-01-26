@@ -94,6 +94,16 @@ body {
 			NIGHTFLAG: false,
 	};
 	
+	function preloadTextures() {
+		getTexture("P1");
+		getTexture("P2");
+		getTexture("P3");
+		getTexture("P4");
+		getTexture("bedroom");
+		getTexture("hexint");
+		getTexture("therapistinterior");
+	}
+	
 	function getTexture(name) {
 		if(!(name in WORLD.TEXTURES))
 			WORLD.TEXTURES[name] = PIXI.Texture.fromImage("assets/"+name+".png");
@@ -301,6 +311,7 @@ body {
 		}
 		update_mood_meter(2);
 
+		preloadTextures();
 		loadStart(onScreenObjects);
 		function updateStep() {
 		    theskyyyy.rotation -= 0.001;
