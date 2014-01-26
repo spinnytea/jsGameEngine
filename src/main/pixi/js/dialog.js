@@ -30,7 +30,10 @@ function dialog(response, choices) {
 
 function createChoiceButton(choice) {
 	return $('<button class="btn btn-primary"/>').text(choice.text).click(function() {
-		dialog(choice.response);
+		if(choice.response)
+			dialog(choice.response);
+		else
+			clearDialog();
 		choice.action();
 	});
 }

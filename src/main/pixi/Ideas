@@ -16,8 +16,9 @@ Mechanics
 
 
 TODO
- - indicate when there is something to interact with
+ - make that indication disapear for the dialog peoples
  - add more interactions (more actors on screen, more quests)
+ - reposition people
 
 
 What is implemented
@@ -29,4 +30,6 @@ What is implemented
  - interact with objects on screen via interact method
  - basic dialog box
  . - limit some of the dialogs to one time only
+ - quest for library book
+ - quest for hex
  
