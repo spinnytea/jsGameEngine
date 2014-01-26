@@ -87,6 +87,8 @@ function createAgent(stage, xpos) {
 		if(agent.state.doJump && agent.state.onGround)  {
 			agent.state.doJump   = false;
 			agent.state.onGround = false;
+			increaseMood(0.001, 0.9);
+			
 		}
 		if(!agent.state.onGround) {
 			agent.state.jump += 0.1;

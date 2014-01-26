@@ -40,7 +40,7 @@ function loadMainstreet(onScreenObjects, from) {
 		};
 		onScreenObjects.push(libtalker);
 	};
-	if(WORLD.PROGRESS.show_library)
+	if(WORLD.PROGRESS.show_library || WORLD.SHOW_ALL)
 		show_library();
 	
 	var talker_feeling = createActor(WORLD.GROUNDS.foreground, -100);
@@ -60,7 +60,7 @@ function loadMainstreet(onScreenObjects, from) {
 	};
 	onScreenObjects.push(talker_feeling);
 	
-	if(WORLD.AGENT.state.mood > 0.3) {
+	if(WORLD.AGENT.state.mood > 0.3 || WORLD.SHOW_ALL) {
 		var talker_blame = createActor(WORLD.GROUNDS.foreground, 470);
 		talker_blame.interact = function() {
 			dialog("Do you blame yourself?",
