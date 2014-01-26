@@ -106,6 +106,10 @@ body {
 		return inter;
 	}
 	
+	function addInGameTime(percent) {
+		WORLD.theskyyyy.rotation -= percent*Math.PI*2;
+	}
+	
 	function playSound(sound) {
 		var source = WORLD.SOUNDS.context.createBufferSource();
 		source.buffer = WORLD.SOUNDS[sound];
@@ -316,6 +320,7 @@ body {
             	WORLD.SLEEPSTATE.step += 0.01;
             	if(WORLD.SLEEPSTATE.step > 1)
             		WORLD.SLEEPSTATE.step = 0;
+            	addInGameTime(0.003);
             	WORLD.SLEEPSTATE.filter.angle = Math.sin(WORLD.SLEEPSTATE.step*Math.PI)*10;
             } else {
 			    WORLD.AGENT.update();
