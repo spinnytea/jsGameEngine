@@ -3,25 +3,29 @@ function loadMainstreet(onScreenObjects, from) {
 	WORLD.AGENT.setX(WORLD.WIDTH / 2);
 	WORLD.MOVEMENT = "world";
 
+	var therapist = createProp(WORLD.GROUNDS.foreground, -300, "therapist", 400, 0.7);
+	therapist.interact = function() { loadTherapist(onScreenObjects); };
+	onScreenObjects.push(therapist);
+	if(from && from == "therapist")
+		WORLD.GROUNDS.foreground.position.x = WORLD.WIDTH / 2 - therapist.getX();
+
 	var house = createProp(WORLD.GROUNDS.foreground, 270, "house", 250, 0.3);
-	house.interact = function() {
-		loadHouse(onScreenObjects);
-//		dialog("Go home?",
-//				[
-//				 { 'text': "Yes.", 'response': "Welcome home.", 'action': function() { loadHouse(onScreenObjects); } },
-//				 { 'text': "No.", 'response': "Let's do something first.", 'action': function() { } },
-//				 ]);
-	};
+	house.interact = function() { loadHouse(onScreenObjects); };
 	onScreenObjects.push(house);
 	if(from && from == "house")
 		WORLD.GROUNDS.foreground.position.x = WORLD.WIDTH / 2 - house.getX();
 	
-	var library = createProp(WORLD.GROUNDS.foreground, 1200, "library", 300, 0.63);
-	library.interact = function() {
-		dialog("[the book has been returned]");
-		useItem("book", 0.15, 0.5);
+	// only show the library if we have had the quest at some point
+	var show_library = function() {
+		var library = createProp(WORLD.GROUNDS.foreground, 1200, "library", 300, 0.63);
+		library.interact = function() {
+			dialog("[the book has been returned]");
+			useItem("book", 0.15, 0.5);
+		};
+		onScreenObjects.push(library);
 	};
-	onScreenObjects.push(library);
+	if(WORLD.PROGRESS.show_library)
+		show_library();
 	
 	var talker = createActor(WORLD.GROUNDS.foreground, 470);
 	talker.interact = function() {
@@ -35,10 +39,20 @@ function loadMainstreet(onScreenObjects, from) {
 	onScreenObjects.push(talker);
 	
 	var libquest = createActor(WORLD.GROUNDS.foreground, 100);
+	// only allow the quest if you haven't started
+	if(!WORLD.PROGRESS.show_library)
 	libquest.interact = function() {
 		dialog("Hey, Square, you're heading towards the library, right? Can you return this book for me?",
 				[
-				 { 'text': "Sure.", 'response': "Thanks! [Hands Square the book]", 'action': function() { increaseMood(0.05, 0.3); aquireProp(createProp(WORLD.GROUNDS.foreground, 0, "book")); } },
+				 { 'text': "Sure.", 'response': "Thanks! [Hands Square the book]", 'action': function() {
+					 increaseMood(0.05, 0.3);
+					 aquireProp(createProp(WORLD.GROUNDS.foreground, 0, "book"));
+					if(!WORLD.PROGRESS.show_library) {
+						WORLD.PROGRESS.show_library = true;
+						show_library();
+					}
+					libquest.interact = null;
+				 } },
 				 { 'text': "Okay, I guess.", 'response': "Oh, okay then.", 'action': function() { increaseMood(-0.05, 0.3); } },
 				 ]);
 	};
@@ -70,6 +84,20 @@ function loadHouse(onScreenObjects) {
 	};
 	onScreenObjects.push(bedroom);
 	WORLD.AGENT.setX(bedroom.getStageX());
+}
+
+function loadTherapist(onScreenObjects) {
+	emptyScreenObjects(onScreenObjects);
+	WORLD.MOVEMENT = "player";
+	
+	var interior = createProp(WORLD.GROUNDS.staticforeground, WORLD.WIDTH * 0.5, "therapistinterior", WORLD.HEIGHT * 1.2);
+	interior.setY(WORLD.HEIGHT);
+	interior.stage.item.width = WORLD.WIDTH;
+	interior.interact = function() {
+		loadMainstreet(onScreenObjects, "therapist");
+	};
+	onScreenObjects.push(interior);
+	WORLD.AGENT.setX(interior.getStageX());
 }
 
 
