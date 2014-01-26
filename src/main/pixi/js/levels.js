@@ -28,12 +28,12 @@ function loadMainstreet(onScreenObjects, from) {
 		libtalker.interact = function() {
 			dialog("What are you thinking about the future?",
 					[
-					 { 'text': "How can I possibly think about a future?", 'response': "Just take it one day at a time. Let’s talk about tomorrow.", 'action': function() { increaseMood(-0.05, 1); } },
-					 { 'text': "Hmm. I think I’d like to pick up my hobbies again sometime.", 'response': "That sounds like a great idea. Let’s make a plan for that.", 'action': function() {
+					 { 'text': "How can I possibly think about a future?", 'response': "Just take it one day at a time. Let's talk about tomorrow.", 'action': function() { increaseMood(-0.05, 1); } },
+					 { 'text': "Hmm. I think I'd like to pick up my hobbies again sometime.", 'response': "That sounds like a great idea. Let's make a plan for that.", 'action': function() {
 						 increaseMood(0.05, 0.3);
 						 WORLD.PROGRESS.questions.push("What are you thinking about the future?");
 					 } },
-					 { 'text': "(silence)", 'response': "I’m not going to force you to talk, but it does help.", 'action': function() { increaseMood(-0.05, 1); } },
+					 { 'text': "(silence)", 'response': "I'm not going to force you to talk, but it does help.", 'action': function() { increaseMood(-0.05, 1); } },
 					 ]);
 		};
 		onScreenObjects.push(libtalker);
@@ -63,15 +63,15 @@ function loadMainstreet(onScreenObjects, from) {
 		talker_blame.interact = function() {
 			dialog("Do you blame yourself?",
 					[
-					 { 'text': "It was all my fault, of course I do.", 'response': "Blaming yourself won’t help. You did all you could.", 'action': function() {
+					 { 'text': "It was all my fault, of course I do.", 'response': "Blaming yourself won't help. You did all you could.", 'action': function() {
 						 increaseMood(0.05, 0.5);
 						 WORLD.PROGRESS.questions.push("Do you blame yourself?");
 					 } },
-					 { 'text': "Sometimes.", 'response': "Blaming yourself won’t help. You did all you could.", 'action': function() {
+					 { 'text': "Sometimes.", 'response': "Blaming yourself won't help. You did all you could.", 'action': function() {
 						 increaseMood(0.05, 0.5);
 						 WORLD.PROGRESS.questions.push("Do you blame yourself?");
 					 } },
-					 { 'text': "(silence)", 'response': "I’m not going to force you to talk, but it does help.", 'action': function() { increaseMood(-0.05, 1); } },
+					 { 'text': "(silence)", 'response': "I'm not going to force you to talk, but it does help.", 'action': function() { increaseMood(-0.05, 1); } },
 					 ]);
 		};
 		onScreenObjects.push(talker_blame);
@@ -80,15 +80,15 @@ function loadMainstreet(onScreenObjects, from) {
 		talker_dreams.interact = function() {
 			dialog("How are your dreams?",
 					[
-					 { 'text': "Better. Less frequent, at least.", 'response': "And why do you think that’s happening?", 'action': function() {
+					 { 'text': "Better. Less frequent, at least.", 'response': "And why do you think that's happening?", 'action': function() {
 						 increaseMood(0.05, 0.5);
 						 WORLD.PROGRESS.questions.push("How are your dreams?");
 					 } },
-					 { 'text': "Worse...I feel so helpless.", 'response': "And why do you think that’s happening?", 'action': function() {
+					 { 'text': "Worse...I feel so helpless.", 'response': "And why do you think that's happening?", 'action': function() {
 						 increaseMood(0.05, 0.5);
 						 WORLD.PROGRESS.questions.push("How are your dreams?");
 					 } },
-					 { 'text': "(silence)", 'response': "I’m not going to force you to talk, but it does help.", 'action': function() { increaseMood(-0.05, 1); } },
+					 { 'text': "(silence)", 'response': "I'm not going to force you to talk, but it does help.", 'action': function() { increaseMood(-0.05, 1); } },
 					 ]);
 		};
 		onScreenObjects.push(talker_dreams);
