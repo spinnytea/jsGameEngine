@@ -75,12 +75,30 @@ body {
 				finished_linwood: false,
 				therapist_question: 0,
 			},
+
+			ENDFLAG: false,
+			SHOWEND: false,
+
+			EEGGS: {
+				jump_state: 0,
+				jumpover_count: 3,
+				moonmoon_count: 5,
+				ready_go: false,
+			},
 	};
 	
 	function getTexture(name) {
 		if(!(name in WORLD.TEXTURES))
 			WORLD.TEXTURES[name] = PIXI.Texture.fromImage("assets/"+name+".png");
 		return WORLD.TEXTURES[name];
+	}
+	
+	// time of day as a float from 0 to 1
+	function getInGameTime() {
+		var inter = -1 * WORLD.theskyyyy.rotation / (Math.PI*2) + 0.25;
+		if(inter > 1)
+			inter -= 1;
+		return inter;
 	}
 	
 	function playSound(sound) {
@@ -162,6 +180,7 @@ body {
 		
 		// create the sky
 		var theskyyyy = new PIXI.Sprite(getTexture("THE_SKYYYYYYYYY"));
+		WORLD.theskyyyy = theskyyyy;
 		theskyyyy.anchor.x = 0.5;
 		theskyyyy.anchor.y = 0.5;
 		theskyyyy.position.x = WORLD.WIDTH / 2;
@@ -170,6 +189,7 @@ body {
 
         // create the sun
 		var thesun = new PIXI.Sprite(getTexture("sun"));
+        WORLD.thesun = thesun;
 		thesun.anchor.x = 0.5;
 		thesun.anchor.y = 0.5;
 		thesun.position.x = WORLD.WIDTH / 2;
@@ -178,6 +198,7 @@ body {
 		WORLD.GROUNDS.skybox.addChild(thesun);
 
         var themoon = new PIXI.Sprite(getTexture("moon"));
+        WORLD.themoon = themoon;
         themoon.anchor.x = 0.5;
         themoon.anchor.y = 0.5;
         themoon.radius = thesun.radius - 75;
@@ -185,6 +206,15 @@ body {
         themoon.position.y = theskyyyy.position.y + themoon.radius;
         WORLD.GROUNDS.skybox.addChild(themoon);
 
+        //add the end choice
+        var theend = new PIXI.Sprite(getTexture("endcloud"));
+        theend.anchor.x = 0.5;
+        theend.anchor.y = 0.5;
+        theend.position.x = WORLD.WIDTH / 2;
+        theend.position.y = WORLD.HEIGHT / 2;
+        theend.visible = false;
+        stage.addChild(theend);
+         
 		// add the renderer view element to the DOM
 		$("#game_div").append(renderer.view);
 		
@@ -211,8 +241,19 @@ body {
 
 		keydown_jump = function() {
 			//press space to jump
-			WORLD.AGENT.state.doJump = true
+			WORLD.AGENT.state.doJump = true;
 		};
+
+		keydown_return = function() {
+			if(WORLD.ENDFLAG) {
+				WORLD.ENDFLAG = false;
+				WORLD.SHOWEND = true;
+			}
+		};
+
+		// keydown_quit = function() {
+
+		// }
 
 		var alertbox = new PIXI.Sprite(getTexture("alert"));
 		alertbox.anchor.x = 0.5;
@@ -247,7 +288,12 @@ body {
 
 		loadMainstreet(onScreenObjects);
 		function updateStep() {
-		    theskyyyy.rotation -= 0.0005;
+		    theskyyyy.rotation -= 0.001;
+		    theskyyyy.rotation += WORLD.AGENT.state.mood * 0.0008;
+		    if(WORLD.EEGGS.ready_go)
+			    theskyyyy.rotation -= 0.004;
+		    if(theskyyyy.rotation < Math.PI*-2)
+		    	theskyyyy.rotation += Math.PI*2;
 		    thesun.position.x   = thesun.radius  * Math.cos(theskyyyy.rotation) + theskyyyy.position.x;
 		    thesun.position.y   = thesun.radius  * Math.sin(theskyyyy.rotation) + theskyyyy.position.y;
             themoon.position.x  = themoon.radius * Math.cos(theskyyyy.rotation+Math.sin(theskyyyy.rotation*0.15+2)*0.50+Math.PI) + theskyyyy.position.x;
@@ -271,7 +317,13 @@ body {
 		    	alertbox.position.x = WORLD.AGENT.getX();
 		    	alertbox.position.y = WORLD.AGENT.getY() - WORLD.AGENT.base.height - 5;
 		    	alertbox.visible = true;
+		    	if(WORLD.EEGGS.jump_state == 0) WORLD.EEGGS.jump_state = 1;
 		    });
+		    
+		    if(WORLD.EEGGS.jump_state == 1 && alertbox.visible == false) {
+		    	WORLD.EEGGS.jump_state = 2;
+		    	WORLD.EEGGS.jumpover_count--;
+		    }
 		    
 		    grayFilter.gray = 1 - WORLD.AGENT.state.mood;
 		    if(WORLD.AGENT.state.mood <= 0.2) update_mood_meter(0);
@@ -281,6 +333,10 @@ body {
 		    for(i in onScreenObjects)
 		    	if(onScreenObjects[i].update)
 			    	onScreenObjects[i].update();
+            if(WORLD.AGENT.state.mood >= 0.9 && !WORLD.SHOWEND) {
+            	WORLD.ENDFLAG = true;
+            }
+
 		}
 		
 		// the animation step is called whenever the screen is supposed to draw
@@ -310,6 +366,8 @@ body {
 				}
 			}
 			
+			theend.visible = WORLD.ENDFLAG;
+
 		    // render the stage   
 		    renderer.render(stage);
 		}

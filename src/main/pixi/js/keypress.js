@@ -5,6 +5,7 @@ var keydown_up = function() { };
 var keydown_down = function() { };
 var keydown_interact = function() { };
 var keydown_jump = function() { };
+var keydown_return = function() { };
 var keyup_left = function() { };
 var keyup_right = function() { };
 var keyup_up = function() { };
@@ -20,6 +21,7 @@ onkeydown = function(e) {
 	case 40:	keydown_down();			break;
 	case 70:	keydown_interact();		break;
 	case 66:    keydown_jump();     	break;
+	case 82:    keydown_return();       break;
 	default:
 		console.log("key: " + event.keyCode);
 		break;
