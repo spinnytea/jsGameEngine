@@ -150,23 +150,35 @@ body {
 		
 		var onScreenObjects = [];
 		
-		WORLD.AGENT = createAgent(stage, WORLD.WIDTH/2);
-		keydown_interact = function() {
+		check_interact = function(show) {
 			// find an element that is near the player
 		    for(i in onScreenObjects) {
 		    	if(onScreenObjects[i] && onScreenObjects[i].interact) {
 			    	// get the distance between the elements and the agent
 			    	var dist = Math.abs(onScreenObjects[i].getStageX() - WORLD.AGENT.getStageX());
-			    	if(dist < WORLD.AGENT.base.width/2)
-			    		onScreenObjects[i].interact();
+			    	if(dist < WORLD.AGENT.base.width/2) show();
 		    	}
 		    }
+		}
+
+		WORLD.AGENT = createAgent(stage, WORLD.WIDTH/2);
+		keydown_interact = function() {
+			// find an element that is near the player
+		    check_interact(function() {
+		    	onScreenObjects[i].interact();
+		    });
 		};
 
 		keydown_jump = function() {
 			//press space to jump
 			WORLD.AGENT.state.doJump = true
 		};
+
+		var alertbox = new PIXI.Sprite(getTexture("alert"));
+		alertbox.anchor.x = 0.5;
+		alertbox.anchor.y = 1;
+		alertbox.visible = false;
+		stage.addChild(alertbox);
 
 		loadMainstreet(onScreenObjects);
 		function updateStep() {
@@ -179,14 +191,22 @@ body {
 		    if(WORLD.MOVEMENT == "player") {
 		    	WORLD.AGENT.setX(WORLD.AGENT.getX() - (WORLD.AGENT.state.velocity + WORLD.AGENT.state.jump_velocity));
 		    	WORLD.AGENT.setX(Math.max(WORLD.MAP_MIN, Math.min(WORLD.MAP_MAX, WORLD.AGENT.getX())));
+		    	alertbox.visible = false;
 		    } else if(WORLD.MOVEMENT == "world") {
 		    	if(WORLD.AGENT.state.velocity < 0 && WORLD.GROUNDS.foreground.position.x <= WORLD.MAP_MIN) {} // if negative and less than min, then stop
 		    	else if(WORLD.AGENT.state.velocity > 0 && WORLD.GROUNDS.foreground.position.x >= WORLD.MAP_MAX){} // if positive and greater tan max, then stop
 		    	else {
 				    WORLD.GROUNDS.foreground.position.x += (WORLD.AGENT.state.velocity + WORLD.AGENT.state.jump_velocity);
 				    WORLD.GROUNDS.background.position.x += (WORLD.AGENT.state.velocity + WORLD.AGENT.state.jump_velocity)/2;
+				    alertbox.visible = false;
 		    	}
 		    }
+
+		    check_interact(function(){
+		    	alertbox.position.x = WORLD.AGENT.getX();
+		    	alertbox.position.y = WORLD.AGENT.getY() - WORLD.AGENT.base.height - 5;
+		    	alertbox.visible = true;
+		    });
 		    
 		    grayFilter.gray = 1 - WORLD.AGENT.state.mood;
 		    for(i in onScreenObjects)
