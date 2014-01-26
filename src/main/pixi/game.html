@@ -79,6 +79,7 @@ body {
 				jump_state: 0,
 				jumpover_count: 3,
 				moonmoon_count: 5,
+				ready_go: false,
 			},
 	};
 	
@@ -255,6 +256,8 @@ body {
 		loadMainstreet(onScreenObjects);
 		function updateStep() {
 		    theskyyyy.rotation -= 0.0005;
+		    if(WORLD.EEGGS.ready_go)
+			    theskyyyy.rotation -= 0.004;
 		    thesun.position.x   = thesun.radius  * Math.cos(theskyyyy.rotation) + theskyyyy.position.x;
 		    thesun.position.y   = thesun.radius  * Math.sin(theskyyyy.rotation) + theskyyyy.position.y;
             themoon.position.x  = themoon.radius * Math.cos(theskyyyy.rotation+Math.sin(theskyyyy.rotation*0.15+2)*0.50+Math.PI) + theskyyyy.position.x;

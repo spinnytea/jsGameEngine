@@ -137,6 +137,7 @@ function createAgent(stage, xpos) {
 					if(WORLD.EEGGS.moonmoon_count < 0) {
 						WORLD.thesun.setTexture(getTexture("sunsun"));
 						WORLD.themoon.setTexture(getTexture("moonmoon"));
+						WORLD.EEGGS.ready_go = true;
 					}
 				}
 			}
