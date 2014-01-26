@@ -32,12 +32,12 @@ function loadMainstreet(onScreenObjects, from) {
 		libtalker.interact = function() {
 			dialog("What are you thinking about the future?",
 					[
-					 { 'text': "How can I possibly think about a future?", 'response': "Just take it one day at a time. Let's talk about tomorrow.", 'action': function() { increaseMood(-0.05, 1); } },
+					 { 'text': "How can I possibly think about a future?", 'response': "Just take it one day at a time. Let's talk about tomorrow.", 'action': function() { increaseMood(-0.05); } },
 					 { 'text': "Hmm. I think I'd like to pick up my hobbies again sometime.", 'response': "That sounds like a great idea. Let's make a plan for that.", 'action': function() {
-						 increaseMood(0.05, 0.3);
+						 increaseMood(0.05);
 						 WORLD.PROGRESS.questions.push("What are you thinking about the future?");
 					 } },
-					 { 'text': "(silence)", 'response': "I'm not going to force you to talk, but it does help.", 'action': function() { increaseMood(-0.05, 1); } },
+					 { 'text': "(silence)", 'response': "I'm not going to force you to talk, but it does help.", 'action': function() { increaseMood(-0.05); } },
 					 ]);
 		};
 		onScreenObjects.push(libtalker);
@@ -50,14 +50,14 @@ function loadMainstreet(onScreenObjects, from) {
 		dialog("How are you feeling today?",
 				[
 				 { 'text': "Kind of grey.", 'response': "We all feel that way sometimes.", 'action': function() {
-					 increaseMood(0.05, 0.3);
+					 increaseMood(0.05);
 					 WORLD.PROGRESS.questions.push("How are you feeling today?");
 				 } },
 				 { 'text': "Okay, I guess.", 'response': "We all feel that way sometimes.", 'action': function() {
-					 increaseMood(0.05, 0.3);
+					 increaseMood(0.05);
 					 WORLD.PROGRESS.questions.push("How are you feeling today?");
 				 } },
-				 { 'text': "...", 'response': "I'm not going to force you to talk, but it does help.", 'action': function() { increaseMood(-0.05, 1); } },
+				 { 'text': "...", 'response': "I'm not going to force you to talk, but it does help.", 'action': function() { increaseMood(-0.05); } },
 				 ]);
 	};
 	onScreenObjects.push(talker_feeling);
@@ -68,14 +68,14 @@ function loadMainstreet(onScreenObjects, from) {
 			dialog("Do you blame yourself?",
 					[
 					 { 'text': "It was all my fault, of course I do.", 'response': "Blaming yourself won't help. You did all you could.", 'action': function() {
-						 increaseMood(0.05, 0.5);
+						 increaseMood(0.05);
 						 WORLD.PROGRESS.questions.push("Do you blame yourself?");
 					 } },
 					 { 'text': "Sometimes.", 'response': "Blaming yourself won't help. You did all you could.", 'action': function() {
-						 increaseMood(0.05, 0.5);
+						 increaseMood(0.05);
 						 WORLD.PROGRESS.questions.push("Do you blame yourself?");
 					 } },
-					 { 'text': "(silence)", 'response': "I'm not going to force you to talk, but it does help.", 'action': function() { increaseMood(-0.05, 1); } },
+					 { 'text': "(silence)", 'response': "I'm not going to force you to talk, but it does help.", 'action': function() { increaseMood(-0.05); } },
 					 ]);
 		};
 		onScreenObjects.push(talker_blame);
@@ -85,17 +85,80 @@ function loadMainstreet(onScreenObjects, from) {
 			dialog("How are your dreams?",
 					[
 					 { 'text': "Better. Less frequent, at least.", 'response': "And why do you think that's happening?", 'action': function() {
-						 increaseMood(0.05, 0.5);
+						 increaseMood(0.05);
 						 WORLD.PROGRESS.questions.push("How are your dreams?");
 					 } },
 					 { 'text': "Worse...I feel so helpless.", 'response': "And why do you think that's happening?", 'action': function() {
-						 increaseMood(0.05, 0.5);
+						 increaseMood(0.05);
 						 WORLD.PROGRESS.questions.push("How are your dreams?");
 					 } },
-					 { 'text': "(silence)", 'response': "I'm not going to force you to talk, but it does help.", 'action': function() { increaseMood(-0.05, 1); } },
+					 { 'text': "(silence)", 'response': "I'm not going to force you to talk, but it does help.", 'action': function() { increaseMood(-0.05); } },
 					 ]);
 		};
 		onScreenObjects.push(talker_dreams);
+		
+		var talker_gossip = createActor(WORLD.GROUNDS.foreground, 850);
+		talker_gossip.interact = function() {
+			dialog("Heard about what happened, Square. IÕm so sorry.",
+					[
+					 { 'text': "I donÕt really want to talk about it.", 'response': null, 'action': function() {
+						 increaseMood(0.05);
+						 WORLD.PROGRESS.questions.push("Heard about what happened, Square. IÕm so sorry.");
+					 } },
+					 { 'text': "Thanks.", 'response': null, 'action': function() {
+						 increaseMood(0.05);
+						 WORLD.PROGRESS.questions.push("Heard about what happened, Square. IÕm so sorry.");
+					 } },
+					 { 'text': "(silence)", 'response': null, 'action': function() { increaseMood(-0.05); } },
+					 ]);
+		};
+		onScreenObjects.push(talker_gossip);
+		
+		var talker_goverit = createActor(WORLD.GROUNDS.foreground, 750);
+		talker_goverit.interact = function() {
+			dialog("I know youÕre upset, Square, but you have to get over it. You canÕt let it keep you down forever!",
+					[
+					 { 'text': "Screw you.", 'response': null, 'action': function() { increaseMood(-0.1); } },
+					 { 'text': "IÕm trying, okay?", 'response': null, 'action': function() {
+						 increaseMood(0.1);
+						 WORLD.PROGRESS.questions.push("goverit");
+					 } },
+					 { 'text': "(silence)", 'response': null, 'action': function() { increaseMood(-0.05); } },
+					 ]);
+		};
+		onScreenObjects.push(talker_goverit);
+		
+		var talker_weekend = createActor(WORLD.GROUNDS.foreground, 700);
+		talker_goverit.interact = function() {
+			dialog("Hey, Square! Got any plans for this weekend?",
+					[
+					 { 'text': "Not really.", 'response': null, 'action': function() {
+						 increaseMood(0.05);
+						 WORLD.PROGRESS.questions.push("goverit");
+					 } },
+					 { 'text': "(silence)", 'response': null, 'action': function() { increaseMood(-0.05); } },
+					 ]);
+		};
+		onScreenObjects.push(talker_goverit);
+	}
+	
+	if(WORLD.AGENT.state.mood > 0.5 || WORLD.SHOW_ALL) {
+		var talker_loved = createActor(WORLD.GROUNDS.foreground, 900);
+		talker_loved.interact = function() {
+			dialog("Have you been making any efforts to stay in touch with your loved ones?",
+					[
+					 { 'text': "Not really. It's hard to see the point these days.", 'response': "Don't you notice the difference when you put forth the effort?", 'action': function() {
+						 increaseMood(0.05);
+						 WORLD.PROGRESS.questions.push("Have you been making any efforts to stay in touch with your loved ones?");
+					 } },
+					 { 'text': "Yes, even though it's hard.", 'response': "Don't you notice the difference when you put forth the effort?", 'action': function() {
+						 increaseMood(0.1);
+						 WORLD.PROGRESS.questions.push("Have you been making any efforts to stay in touch with your loved ones?");
+					 } },
+					 { 'text': "(silence)", 'response': "I'm not going to force you to talk, but it does help.", 'action': function() { increaseMood(-0.05); } },
+					 ]);
+		};
+		onScreenObjects.push(talker_loved);
 	}
 	
 	var libquest = createActor(WORLD.GROUNDS.foreground, 100, "pentagon");
@@ -105,7 +168,7 @@ function loadMainstreet(onScreenObjects, from) {
 		dialog("Hey, Square, you're heading towards the library, right? Can you return this book for me?",
 				[
 				 { 'text': "Sure.", 'response': "Thanks! [Hands Square the book]", 'action': function() {
-					 increaseMood(0.05, 0.3);
+					 increaseMood(0.05);
 					 aquireProp(createProp(WORLD.GROUNDS.foreground, 0, "book"));
 					if(!WORLD.PROGRESS.show_library) {
 						WORLD.PROGRESS.show_library = true;
@@ -113,7 +176,7 @@ function loadMainstreet(onScreenObjects, from) {
 					}
 					libquest.interact = null;
 				 } },
-				 { 'text': "I don't think I have the time, sorry.", 'response': "Oh, okay then.", 'action': function() { increaseMood(-0.05, 0.3); } },
+				 { 'text': "I don't think I have the time, sorry.", 'response': "Oh, okay then.", 'action': function() { increaseMood(-0.05); } },
 				 ]);
 	};
 	onScreenObjects.push(libquest);

@@ -117,7 +117,7 @@ function createAgent(stage, xpos) {
 
 // if the mood is below this threshold, then increase the mood be this amount
 function increaseMood(amount, threshold) {
-	if(WORLD.AGENT.state.mood < threshold)
+	if(!threshold || WORLD.AGENT.state.mood < threshold)
 		WORLD.AGENT.state.mood += amount;
 	
 	// clamp the value between 0 and 1
@@ -144,13 +144,13 @@ function aquireProp(prop) {
 		dialog("[an item has been lost forever]");
 }
 
-function useItem(name, amount, threshold) {
+function useItem(name, amount) {
 	var success = false;
 	
 	for(i in WORLD.AGENT.inventory)
 		if(WORLD.AGENT.inventory[i] != null && WORLD.AGENT.inventory[i].name == name) {
 			removeObjectFromScene(WORLD.AGENT.inventory[i]);
-			increaseMood(amount, threshold);
+			increaseMood(amount);
 			WORLD.AGENT.inventory[i] = null;
 			success = true;
 			break;
