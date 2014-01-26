@@ -85,6 +85,8 @@ body {
 				moonmoon_count: 5,
 				ready_go: false,
 			},
+
+			GOTOSLEEP: false,
 	};
 	
 	function getTexture(name) {
@@ -336,6 +338,16 @@ body {
             if(WORLD.AGENT.state.mood >= 0.9 && !WORLD.SHOWEND) {
             	WORLD.ENDFLAG = true;
             }
+
+            if(WORLD.GOTOSLEEP) {
+            	//console.log("go to sleep.");
+	            var twistbedroom = new PIXI.DisplayObjectContainer();
+				twistbedroom.addChild( );
+				var twistFilter = new PIXI.TwistFilter();
+				twistbedroom.filter = twistFilter;
+				stage.addChild(twistbedroom);
+            }
+
 
 		}
 		

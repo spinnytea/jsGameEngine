@@ -242,8 +242,8 @@ function loadHouse(onScreenObjects) {
 		[
 		 { 'text': "Sure.", 'response': "Good.", 'action': function() {
 			 increaseMood(0.1);
-			 //To do:
-			 //loadDream(); 
+
+			 WORLD.GOTOSLEEP = true;
 		 } },
 		 { 'text': "I don't feel like to go to sleep.", 'response': "Ok then.", 'action': function() {
 			 increaseMood(-0.1);
@@ -253,6 +253,9 @@ function loadHouse(onScreenObjects) {
 	};
 	bed.stage.circle.visible = false;
 	bed.stage.shadow.visible = false;
+
+	//To do
+	//if it is night time
 	if(1) {
 		onScreenObjects.push(bed);
 	}
