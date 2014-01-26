@@ -255,7 +255,8 @@ body {
 
 		loadMainstreet(onScreenObjects);
 		function updateStep() {
-		    theskyyyy.rotation -= 0.0005;
+		    theskyyyy.rotation -= 0.001;
+		    theskyyyy.rotation += WORLD.AGENT.state.mood * 0.0008;
 		    if(WORLD.EEGGS.ready_go)
 			    theskyyyy.rotation -= 0.004;
 		    thesun.position.x   = thesun.radius  * Math.cos(theskyyyy.rotation) + theskyyyy.position.x;

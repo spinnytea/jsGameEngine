@@ -35,7 +35,7 @@ function createActor(stage, xpos, texturename) {
 	obj.stage.shadow.height = obj.base.height / 4;
 	
 	obj.state.movement = {
-		original_x: obj.stage.circle.position.x,
+		original_x: xpos,
 		max_dist: 32,
 		move_chance: 0.01,
 		move_step: 0,

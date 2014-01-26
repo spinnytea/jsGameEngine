@@ -59,7 +59,7 @@ function loadMainstreet(onScreenObjects, from) {
 	if(WORLD.PROGRESS.show_library || WORLD.SHOW_ALL)
 		show_library();
 	
-	var talker_sosadhearhappened = createActor(WORLD.GROUNDS.foreground, -100);
+	var talker_sosadhearhappened = createActor(WORLD.GROUNDS.foreground, 40);
 	if(WORLD.PROGRESS.questions.indexOf("sosadhearhappened") == -1)
 	talker_sosadhearhappened.interact = function() {
 		dialog("I haven't you seen you in forever! How are you these days?",
@@ -100,7 +100,7 @@ function loadMainstreet(onScreenObjects, from) {
 		};
 		onScreenObjects.push(talker_sillyquestion);
 		
-		var talker_itsyou = createActor(WORLD.GROUNDS.foreground, 800);
+		var talker_itsyou = createActor(WORLD.GROUNDS.foreground, 140);
 		talker_itsyou.interact = function() {
 			dialog("Oh, it's you. What do you want?",
 					[
@@ -119,7 +119,7 @@ function loadMainstreet(onScreenObjects, from) {
 		};
 		onScreenObjects.push(talker_itsyou);
 		
-		var talker_gossip = createActor(WORLD.GROUNDS.foreground, 850);
+		var talker_gossip = createActor(WORLD.GROUNDS.foreground, -160);
 		if(WORLD.PROGRESS.questions.indexOf("gossip") == -1)
 		talker_gossip.interact = function() {
 			dialog("Heard about what happened, Square. I'm so sorry.",
@@ -140,6 +140,7 @@ function loadMainstreet(onScreenObjects, from) {
 		onScreenObjects.push(talker_gossip);
 		
 		var talker_hexstart = createActor(WORLD.GROUNDS.foreground, 950, "pentagon");
+		if(!WORLD.PROGRESS.unlock_linwood)
 		talker_hexstart.interact = function() {
 			dialog("Square! I just hear Hexagon isn't feeling well. You're neighbors, right? Why don't you stop by and see if you can help?",
 					[
@@ -149,6 +150,7 @@ function loadMainstreet(onScreenObjects, from) {
 						 WORLD.PROGRESS.unlock_linwood = true;
 						 aquireProp(createProp(WORLD.GROUNDS.foreground, 0, "fruitbasket"));
 						 linwoodhouse.interact = function() { loadLinwoodHouse(onScreenObjects); };
+						 talker_hexstart.interact = null;
 					 } },
 					 { 'text': "I'm not in a good place to be helpful.", 'response': "Well, that's selfish.", 'action': function() { increaseMood(-0.1); } },
 					 ]);
@@ -157,7 +159,7 @@ function loadMainstreet(onScreenObjects, from) {
 	}
 	
 	if(WORLD.AGENT.state.mood > 0.5 || WORLD.SHOW_ALL) {
-		var talker_goverit = createActor(WORLD.GROUNDS.foreground, 750);
+		var talker_goverit = createActor(WORLD.GROUNDS.foreground, 780);
 		if(WORLD.PROGRESS.questions.indexOf("goverit") == -1)
 		talker_goverit.interact = function() {
 			dialog("I know you're upset, Square, but you have to get over it. You can't let it keep you down forever!",
@@ -173,7 +175,7 @@ function loadMainstreet(onScreenObjects, from) {
 		};
 		onScreenObjects.push(talker_goverit);
 		
-		var talker_weekend = createActor(WORLD.GROUNDS.foreground, 700);
+		var talker_weekend = createActor(WORLD.GROUNDS.foreground, 720);
 		if(WORLD.PROGRESS.questions.indexOf("weekend") == -1)
 		talker_weekend.interact = function() {
 			dialog("Hey, Square! Got any plans for this weekend?",
