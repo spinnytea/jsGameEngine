@@ -78,6 +78,11 @@ body {
 
 			ENDFLAG: false,
 			SHOWEND: false,
+			
+			SLEEPSTATE: {
+				filter: null,
+				step: 0, // if the step is not 1, then the filter is in use
+			},
 
 			EEGGS: {
 				jump_state: 0,
@@ -172,6 +177,11 @@ body {
 		};
 		keyup_left  = function() { WORLD.AGENT.state.velocity = 0; };
 		keyup_right = function() { WORLD.AGENT.state.velocity = 0; };
+		
+		WORLD.SLEEPSTATE.filter = new PIXI.TwistFilter();
+		WORLD.SLEEPSTATE.filter.angle = 0;
+		stage.filters = [WORLD.SLEEPSTATE.filter];
+		
 
 		// create a renderer instance
 		// TODO make a note that: if you are using chrome and running from a file system, the security policy won't let you load images
@@ -233,10 +243,12 @@ body {
 
 		WORLD.AGENT = createAgent(WORLD.GROUNDS.playerplain, WORLD.WIDTH/2);
 		keydown_interact = function() {
-			// find an element that is near the player
-		    check_interact(function() {
-		    	onScreenObjects[i].interact();
-		    });
+            if(WORLD.SLEEPSTATE.step == 0) {
+				// find an element that is near the player
+			    check_interact(function() {
+			    	onScreenObjects[i].interact();
+			    });
+            }
 		};
 
 		keydown_jump = function() {
@@ -298,20 +310,29 @@ body {
 		    thesun.position.y   = thesun.radius  * Math.sin(theskyyyy.rotation) + theskyyyy.position.y;
             themoon.position.x  = themoon.radius * Math.cos(theskyyyy.rotation+Math.sin(theskyyyy.rotation*0.15+2)*0.50+Math.PI) + theskyyyy.position.x;
             themoon.position.y  = themoon.radius * Math.sin(theskyyyy.rotation+Math.sin(theskyyyy.rotation*0.15+0)*0.25+Math.PI) + theskyyyy.position.y;
-		    WORLD.AGENT.update();
-		    if(WORLD.MOVEMENT == "player") {
-		    	WORLD.AGENT.setX(WORLD.AGENT.getX() - (WORLD.AGENT.state.velocity + WORLD.AGENT.state.jump_velocity));
-		    	WORLD.AGENT.setX(Math.max(WORLD.MAP_MIN, Math.min(WORLD.MAP_MAX, WORLD.AGENT.getX())));
-		    	alertbox.visible = false;
-		    } else if(WORLD.MOVEMENT == "world") {
-		    	if(WORLD.AGENT.state.velocity < 0 && WORLD.GROUNDS.foreground.position.x <= WORLD.MAP_MIN) {} // if negative and less than min, then stop
-		    	else if(WORLD.AGENT.state.velocity > 0 && WORLD.GROUNDS.foreground.position.x >= WORLD.MAP_MAX){} // if positive and greater tan max, then stop
-		    	else {
-				    WORLD.GROUNDS.foreground.position.x += (WORLD.AGENT.state.velocity + WORLD.AGENT.state.jump_velocity);
-				    WORLD.GROUNDS.background.position.x += (WORLD.AGENT.state.velocity + WORLD.AGENT.state.jump_velocity)/2;
-				    alertbox.visible = false;
-		    	}
-		    }
+            
+            // if we are updating the sleep steps, then don't sleep
+            if(WORLD.SLEEPSTATE.step > 0) {
+            	WORLD.SLEEPSTATE.step += 0.01;
+            	if(WORLD.SLEEPSTATE.step > 1)
+            		WORLD.SLEEPSTATE.step = 0;
+            	WORLD.SLEEPSTATE.filter.angle = Math.sin(WORLD.SLEEPSTATE.step*Math.PI)*10;
+            } else {
+			    WORLD.AGENT.update();
+			    if(WORLD.MOVEMENT == "player") {
+			    	WORLD.AGENT.setX(WORLD.AGENT.getX() - (WORLD.AGENT.state.velocity + WORLD.AGENT.state.jump_velocity));
+			    	WORLD.AGENT.setX(Math.max(WORLD.MAP_MIN, Math.min(WORLD.MAP_MAX, WORLD.AGENT.getX())));
+			    	alertbox.visible = false;
+			    } else if(WORLD.MOVEMENT == "world") {
+			    	if(WORLD.AGENT.state.velocity < 0 && WORLD.GROUNDS.foreground.position.x <= WORLD.MAP_MIN) {} // if negative and less than min, then stop
+			    	else if(WORLD.AGENT.state.velocity > 0 && WORLD.GROUNDS.foreground.position.x >= WORLD.MAP_MAX){} // if positive and greater tan max, then stop
+			    	else {
+					    WORLD.GROUNDS.foreground.position.x += (WORLD.AGENT.state.velocity + WORLD.AGENT.state.jump_velocity);
+					    WORLD.GROUNDS.background.position.x += (WORLD.AGENT.state.velocity + WORLD.AGENT.state.jump_velocity)/2;
+					    alertbox.visible = false;
+			    	}
+			    }
+            }
 
 		    check_interact(function(){
 		    	alertbox.position.x = WORLD.AGENT.getX();
