@@ -1,9 +1,11 @@
-function createActor(stage, xpos) {
+function createActor(stage, xpos, texturename) {
 	var obj = {};
 	
 	// create a texture from an image path
 	// create a new Sprite using the texture
-	var circle = new PIXI.Sprite(getTexture("circle"));
+	if(!texturename)
+		texturename = "triangle";
+	var circle = new PIXI.Sprite(getTexture(texturename));
 	var shadow = new PIXI.Sprite(getTexture("shadow"));
 	
 	// center the sprites anchor point
@@ -67,7 +69,7 @@ function createActor(stage, xpos) {
 
 
 function createAgent(stage, xpos) {
-	var agent = createActor(stage, xpos);
+	var agent = createActor(stage, xpos, "square");
 	
 	// scalar value from 0 to 1
 	agent.state.mood = 0.1;
