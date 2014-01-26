@@ -78,6 +78,7 @@ body {
 			EEGGS: {
 				jump_state: 0,
 				jumpover_count: 3,
+				moonmoon_count: 5,
 			},
 	};
 	
@@ -174,6 +175,7 @@ body {
 
         // create the sun
 		var thesun = new PIXI.Sprite(getTexture("sun"));
+        WORLD.thesun = thesun;
 		thesun.anchor.x = 0.5;
 		thesun.anchor.y = 0.5;
 		thesun.position.x = WORLD.WIDTH / 2;
@@ -182,6 +184,7 @@ body {
 		WORLD.GROUNDS.skybox.addChild(thesun);
 
         var themoon = new PIXI.Sprite(getTexture("moon"));
+        WORLD.themoon = themoon;
         themoon.anchor.x = 0.5;
         themoon.anchor.y = 0.5;
         themoon.radius = thesun.radius - 75;

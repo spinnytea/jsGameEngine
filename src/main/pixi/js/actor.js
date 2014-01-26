@@ -130,8 +130,16 @@ function createAgent(stage, xpos) {
 			agent.state.doJump   = false;
 			agent.state.onGround = false;
 			increaseMood(0.001, 0.9);
-			if(WORLD.EEGGS.jumpover_count < 0)
+			if(WORLD.EEGGS.jumpover_count < 0) {
 				playSound("jump");
+				if(WORLD.MOVEMENT == "player") {
+					WORLD.EEGGS.moonmoon_count--;
+					if(WORLD.EEGGS.moonmoon_count < 0) {
+						WORLD.thesun.setTexture(getTexture("sunsun"));
+						WORLD.themoon.setTexture(getTexture("moonmoon"));
+					}
+				}
+			}
 		}
 		if(!agent.state.onGround) {
 			agent.state.jump += 0.1;
