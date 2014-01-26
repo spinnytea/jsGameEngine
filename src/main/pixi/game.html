@@ -93,11 +93,13 @@ body {
 		// when the agent moves, we move the foreground and background in the opposite direction
 		// things that are farther away move slower
 	 	keydown_left  = function() {
-			WORLD.AGENT.state.velocity = 4;
+			WORLD.AGENT.state.velocity  = 4;
+			WORLD.AGENT.state.direction = 1;
 			clearDialog();
 		};
 		keydown_right = function() {
-			WORLD.AGENT.state.velocity = -4;
+			WORLD.AGENT.state.velocity  = -4;
+			WORLD.AGENT.state.direction = -1;
 			clearDialog();
 		};
 		keyup_left  = function() { WORLD.AGENT.state.velocity = 0; };
@@ -139,7 +141,7 @@ body {
 		var onScreenObjects = [];
 		
 		WORLD.AGENT = createAgent(stage, WORLD.WIDTH/2);
-		keyInteract = function() {
+		keydown_interact = function() {
 			// find an element that is near the player
 		    for(i in onScreenObjects) {
 		    	if(onScreenObjects[i] && onScreenObjects[i].interact) {
@@ -151,8 +153,12 @@ body {
 		    }
 		};
 
+		keydown_jump = function() {
+			//press space to jump
+			WORLD.AGENT.state.doJump = true
+		};
+
 		loadMainstreet(onScreenObjects);
-		
 		function updateStep() {
 		    theskyyyy.rotation -= 0.0005;
 		    thesun.position.x   = thesun.radius  * Math.cos(theskyyyy.rotation) + theskyyyy.position.x;
@@ -161,14 +167,14 @@ body {
             themoon.position.y  = themoon.radius * Math.sin(theskyyyy.rotation+Math.sin(theskyyyy.rotation*0.15+0)*0.25+Math.PI) + theskyyyy.position.y;
 		    WORLD.AGENT.update();
 		    if(WORLD.MOVEMENT == "player") {
-		    	WORLD.AGENT.setX(WORLD.AGENT.getX() - WORLD.AGENT.state.velocity);
+		    	WORLD.AGENT.setX(WORLD.AGENT.getX() - (WORLD.AGENT.state.velocity + WORLD.AGENT.state.jump_velocity));
 		    	WORLD.AGENT.setX(Math.max(WORLD.MAP_MIN, Math.min(WORLD.MAP_MAX, WORLD.AGENT.getX())));
 		    } else if(WORLD.MOVEMENT == "world") {
 		    	if(WORLD.AGENT.state.velocity < 0 && WORLD.GROUNDS.foreground.position.x <= WORLD.MAP_MIN) {} // if negative and less than min, then stop
 		    	else if(WORLD.AGENT.state.velocity > 0 && WORLD.GROUNDS.foreground.position.x >= WORLD.MAP_MAX){} // if positive and greater tan max, then stop
 		    	else {
-				    WORLD.GROUNDS.foreground.position.x += WORLD.AGENT.state.velocity;
-				    WORLD.GROUNDS.background.position.x += WORLD.AGENT.state.velocity/2;
+				    WORLD.GROUNDS.foreground.position.x += (WORLD.AGENT.state.velocity + WORLD.AGENT.state.jump_velocity);
+				    WORLD.GROUNDS.background.position.x += (WORLD.AGENT.state.velocity + WORLD.AGENT.state.jump_velocity)/2;
 		    	}
 		    }
 		    

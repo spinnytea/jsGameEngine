@@ -72,8 +72,33 @@ function createAgent(stage, xpos) {
 	var agent = createActor(stage, xpos, "square");
 	
 	// scalar value from 0 to 1
-	agent.state.mood = 0.1;
-	agent.state.velocity = 0;
+	agent.state.mood      = 0.1;
+    agent.state.jump      = 0;
+    agent.state.doJump    = false;
+	agent.state.onGround  = true;
+	agent.state.velocity  = 0;
+	agent.state.jump_velocity = 0;
+	agent.state.direction = 1;
+
+	var update = agent.update;
+	agent.update = function() {
+		update();
+
+		if(agent.state.doJump && agent.state.onGround)  {
+			agent.state.doJump   = false;
+			agent.state.onGround = false;
+		}
+		if(!agent.state.onGround) {
+			agent.state.jump += 0.1;
+			if(WORLD.FLOOR - Math.sin(agent.state.jump) >= WORLD.FLOOR) {
+				agent.state.jump = 0;
+				agent.state.onGround = true;
+			}
+		}
+
+		agent.stage.circle.position.y = WORLD.FLOOR - (agent.base.height*2*Math.sin(agent.state.jump));
+		agent.state.jump_velocity = agent.state.jump*0.1*agent.state.direction;
+	};
 	
 	// you can have three items
 	agent.inventory = [ null, null, null ];
