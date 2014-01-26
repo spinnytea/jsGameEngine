@@ -258,7 +258,7 @@ function loadHouse(onScreenObjects) {
 	
 	//To do
 	//if it is night time
-	if(1) {
+	if(WORLD.NIGHTFLAG) {
 		onScreenObjects.push(bed);
 	}
 }

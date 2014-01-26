@@ -90,6 +90,8 @@ body {
 				moonmoon_count: 5,
 				ready_go: false,
 			},
+
+			NIGHTFLAG: false,
 	};
 	
 	function getTexture(name) {
@@ -358,6 +360,9 @@ body {
 			    	onScreenObjects[i].update();
             if(WORLD.AGENT.state.mood >= 0.9 && !WORLD.SHOWEND) {
             	WORLD.ENDFLAG = true;
+            }
+            if(getInGameTime()<0.25 || getInGameTime()>0.75 ) {
+            	WORLD.NIGHTFLAG = true;
             }
 		}
 		
