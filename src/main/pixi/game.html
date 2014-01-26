@@ -236,8 +236,10 @@ body {
 		};
 
 		keydown_return = function() {
-			WORLD.ENDFLAG = false;
-			WORLD.SHOWEND = true;
+			if(WORLD.ENDFLAG) {
+				WORLD.ENDFLAG = false;
+				WORLD.SHOWEND = true;
+			}
 		};
 
 		// keydown_quit = function() {
