@@ -2,6 +2,8 @@ function loadMainstreet(onScreenObjects, from) {
 	emptyScreenObjects(onScreenObjects);
 	WORLD.AGENT.setX(WORLD.WIDTH / 2);
 	WORLD.MOVEMENT = "world";
+	WORLD.MAP_MIN = -2400;
+	WORLD.MAP_MAX = 2400;
 
 	var therapist = createProp(WORLD.GROUNDS.foreground, -300, "therapist", 400, 0.7);
 	therapist.interact = function() { loadTherapist(onScreenObjects); };
@@ -126,6 +128,8 @@ function loadMainstreet(onScreenObjects, from) {
 function loadHouse(onScreenObjects) {
 	emptyScreenObjects(onScreenObjects);
 	WORLD.MOVEMENT = "player";
+	WORLD.MAP_MIN = 330;
+	WORLD.MAP_MAX = 670;
 	
 	var bedroom = createProp(WORLD.GROUNDS.staticforeground, WORLD.WIDTH * 0.44, "bedroom", WORLD.HEIGHT * 1.2, 0.44);
 	bedroom.setY(WORLD.HEIGHT);
@@ -145,6 +149,8 @@ function loadHouse(onScreenObjects) {
 function loadTherapist(onScreenObjects) {
 	emptyScreenObjects(onScreenObjects);
 	WORLD.MOVEMENT = "player";
+	WORLD.MAP_MIN = 0;
+	WORLD.MAP_MAX = WORLD.WIDTH;
 	
 	var interior = createProp(WORLD.GROUNDS.staticforeground, WORLD.WIDTH * 0.5, "therapistinterior", WORLD.HEIGHT * 1.2);
 	interior.setY(WORLD.HEIGHT);

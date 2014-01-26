@@ -27,7 +27,6 @@ function createActor(stage, xpos, texturename) {
 	obj.base.breathingMagnitude = 5;
 	
 	obj.state = {};
- 
 	obj.state.breathingStep = 0;
 	obj.state.breathingVel = 1;
 	obj.state.activity = Math.random()*0.1 + 0.25;
