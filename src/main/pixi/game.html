@@ -45,7 +45,17 @@ body {
 
 	<script type="text/javascript">
 	// some static information about the world
-	var WORLD = { WIDTH:960, HEIGHT:540, FLOOR:400, STEP_DURATION:16, PREVIOUS_UPDATE:-1, AGENT:null, TEXTURES:{} };
+	var WORLD = {
+			WIDTH:  960,
+			HEIGHT: 540,
+			FLOOR:  400,
+			STEP_DURATION:   16,
+			PREVIOUS_UPDATE: -1,
+			AGENT:    null,
+			TEXTURES:   {},
+			GROUNDS:    {},
+			MOVEMENT: 'world',
+	};
 	
 	function getTexture(name) {
 		if(!(name in WORLD.TEXTURES))
@@ -60,59 +70,47 @@ body {
 		var grayFilter = new PIXI.GrayFilter();
 		
 		// create two different containers to add onScreenObjects into
-		var background = new PIXI.DisplayObjectContainer();
-		var foreground = new PIXI.DisplayObjectContainer();
-		var skybox     = new PIXI.DisplayObjectContainer();
-		stage.addChild(skybox);
-		stage.addChild(background);
-		stage.addChild(foreground);
+		WORLD.GROUNDS.skybox     = new PIXI.DisplayObjectContainer();
+		WORLD.GROUNDS.background = new PIXI.DisplayObjectContainer();
+		WORLD.GROUNDS.staticforeground = new PIXI.DisplayObjectContainer();
+		WORLD.GROUNDS.foreground = new PIXI.DisplayObjectContainer();
+		stage.addChild(WORLD.GROUNDS.skybox);
+		stage.addChild(WORLD.GROUNDS.background);
+		stage.addChild(WORLD.GROUNDS.staticforeground);
+		stage.addChild(WORLD.GROUNDS.foreground);
 		stage.filters = [grayFilter];
+		
+		var mountain = new PIXI.TilingSprite(getTexture("mountain"), 3600, 400);
+		mountain.position.x = -1200;
+		WORLD.GROUNDS.background.addChild(mountain);
 		
 		// when the agent moves, we move the foreground and background in the opposite direction
 		// things that are farther away move slower
-	 	keyLeft  = function() {
-	 		if(WORLD.AGENT.state.speed > 0)
-	 		    WORLD.AGENT.state.speed = 0;
-	 		else	
-	 		    WORLD.AGENT.state.speed -= 2;
-			// foreground.position.x += 16;
-			// background.position.x += 8;
-			foreground.position.x -= 2*WORLD.AGENT.state.speed;
-			background.position.x -= WORLD.AGENT.state.speed;
-
+	 	keydown_left  = function() {
+			WORLD.AGENT.state.velocity  = 4;
+			WORLD.AGENT.state.direction = 1;
 			clearDialog();
 		};
-		keyRight = function() {
-	 		if(WORLD.AGENT.state.speed < 0)
-	 		    WORLD.AGENT.state.speed = 0;
-	 		else	
-	 		    WORLD.AGENT.state.speed += 2;
-			// foreground.position.x -= 16;
-			// background.position.x -= 8;
-			foreground.position.x -= 2*WORLD.AGENT.state.speed;
-			background.position.x -= WORLD.AGENT.state.speed;
-
+		keydown_right = function() {
+			WORLD.AGENT.state.velocity  = -4;
+			WORLD.AGENT.state.direction = -1;
 			clearDialog();
 		};
+		keyup_left  = function() { WORLD.AGENT.state.velocity = 0; };
+		keyup_right = function() { WORLD.AGENT.state.velocity = 0; };
 
 		// create a renderer instance
 		// TODO make a note that: if you are using chrome and running from a file system, the security policy won't let you load images
 		// - to get around this, use firefox, or use a hoted version
 		var renderer = new PIXI.WebGLRenderer(WORLD.WIDTH, WORLD.HEIGHT);
 		
-		// create the ground
-		var ground = new PIXI.Sprite(getTexture("ground"));
-		ground.width = WORLD.WIDTH;
-		ground.position.y = WORLD.FLOOR;
-		stage.addChild(ground);
-
 		// create the sky
 		var theskyyyy = new PIXI.Sprite(getTexture("THE_SKYYYYYYYYY"));
 		theskyyyy.anchor.x = 0.5;
 		theskyyyy.anchor.y = 0.5;
 		theskyyyy.position.x = WORLD.WIDTH / 2;
 		theskyyyy.position.y = WORLD.HEIGHT + 260;
-		skybox.addChild(theskyyyy);
+		WORLD.GROUNDS.skybox.addChild(theskyyyy);
 
         // create the sun
 		var thesun = new PIXI.Sprite(getTexture("sun"));
@@ -121,7 +119,7 @@ body {
 		thesun.position.x = WORLD.WIDTH / 2;
 		thesun.position.y = -80;
 		thesun.radius = Math.abs(theskyyyy.position.y) + Math.abs(thesun.position.y);
-		skybox.addChild(thesun);
+		WORLD.GROUNDS.skybox.addChild(thesun);
 
         var themoon = new PIXI.Sprite(getTexture("moon"));
         themoon.anchor.x = 0.5;
@@ -129,19 +127,18 @@ body {
         themoon.radius = thesun.radius - 75;
         themoon.position.x = WORLD.WIDTH / 2;
         themoon.position.y = theskyyyy.position.y + themoon.radius;
-        skybox.addChild(themoon);
+        WORLD.GROUNDS.skybox.addChild(themoon);
 
 		// add the renderer view element to the DOM
 		$("#game_div").append(renderer.view);
 		
 		var onScreenObjects = [];
 		
-		loadMainstreet(background, foreground, onScreenObjects);
 		WORLD.AGENT = createAgent(stage, WORLD.WIDTH/2);
 		keyInteract = function() {
 			// find an element that is near the player
 		    for(i in onScreenObjects) {
-		    	if(onScreenObjects[i].interact) {
+		    	if(onScreenObjects[i] && onScreenObjects[i].interact) {
 			    	// get the distance between the elements and the agent
 			    	var dist = Math.abs(onScreenObjects[i].getStageX() - WORLD.AGENT.getStageX());
 			    	if(dist < WORLD.AGENT.base.width/2)
@@ -150,16 +147,12 @@ body {
 		    }
 		};
 
-		keyJump = function() {
+		keydown_jump = function() {
 			//press space to jump
-			WORLD.AGENT.jumpstate.isJumping = true;
-
+			WORLD.AGENT.state.doJump = true
 		};
 
-        keyJumpDown = function() {
-    		WORLD.AGENT.jumpstate.isJumping = false;
-    	}
-
+		loadMainstreet(onScreenObjects);
 		function updateStep() {
 		    theskyyyy.rotation -= 0.0005;
 		    thesun.position.x   = thesun.radius  * Math.cos(theskyyyy.rotation) + theskyyyy.position.x;
@@ -167,6 +160,13 @@ body {
             themoon.position.x  = themoon.radius * Math.cos(theskyyyy.rotation+Math.sin(theskyyyy.rotation*0.15+2)*0.50+Math.PI) + theskyyyy.position.x;
             themoon.position.y  = themoon.radius * Math.sin(theskyyyy.rotation+Math.sin(theskyyyy.rotation*0.15+0)*0.25+Math.PI) + theskyyyy.position.y;
 		    WORLD.AGENT.update();
+		    if(WORLD.MOVEMENT == "player")
+		    	WORLD.AGENT.setX(WORLD.AGENT.getX() - (WORLD.AGENT.state.velocity+WORLD.AGENT.state.jump_velocity));
+		    else if(WORLD.MOVEMENT == "world") {
+			    WORLD.GROUNDS.foreground.position.x += (WORLD.AGENT.state.velocity + WORLD.AGENT.state.jump_velocity);
+			    WORLD.GROUNDS.background.position.x += (WORLD.AGENT.state.velocity+WORLD.AGENT.state.jump_velocity)/2;
+		    }
+		    
 		    grayFilter.gray = 1 - WORLD.AGENT.state.mood;
 		    for(i in onScreenObjects)
 		    	if(onScreenObjects[i].update)

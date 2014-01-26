@@ -1,13 +1,17 @@
-function createProp(stage, xpos, texturename, height)
+function createProp(stage, xpos, texturename, height, xanchor)
 {
 	var obj = {};
 	
 	// create a texture from an image path
 	// create a new Sprite using the texture
 	var item = new PIXI.Sprite(getTexture(texturename));
+	obj.name = texturename;
 	
 	// center the sprites anchor point
-	item.anchor.x = 0.1;
+	if(xanchor)
+		item.anchor.x = xanchor;
+	else
+		item.anchor.x = 0.5;
 	item.anchor.y = 1;
 	
 	stage.addChild(item);
@@ -25,10 +29,10 @@ function createProp(stage, xpos, texturename, height)
 	obj.getX = function() { return obj.stage.item.position.x };
 	obj.getY = function() { return obj.stage.item.position.y };
 	obj.setX = function(x) {
-		item.position.x = x;
+		obj.stage.item.position.x = x;
 	};
 	obj.setY = function(y) {
-		item.position.y = y;
+		obj.stage.item.position.y = y;
 	};
 	
 	obj.getStageX = function() {
