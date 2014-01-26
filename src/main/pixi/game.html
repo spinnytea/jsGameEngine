@@ -75,6 +75,10 @@ body {
 				finished_linwood: false,
 				therapist_question: 0,
 			},
+
+			ENDFLAG: false,
+			SHOWEND: false,
+
 			EEGGS: {
 				jump_state: 0,
 				jumpover_count: 3,
@@ -193,6 +197,15 @@ body {
         themoon.position.y = theskyyyy.position.y + themoon.radius;
         WORLD.GROUNDS.skybox.addChild(themoon);
 
+        //add the end choice
+        var theend = new PIXI.Sprite(getTexture("endcloud"));
+        theend.anchor.x = 0.5;
+        theend.anchor.y = 0.5;
+        theend.position.x = WORLD.WIDTH / 2;
+        theend.position.y = WORLD.HEIGHT / 2;
+        theend.visible = false;
+        stage.addChild(theend);
+         
 		// add the renderer view element to the DOM
 		$("#game_div").append(renderer.view);
 		
@@ -219,8 +232,17 @@ body {
 
 		keydown_jump = function() {
 			//press space to jump
-			WORLD.AGENT.state.doJump = true
+			WORLD.AGENT.state.doJump = true;
 		};
+
+		keydown_return = function() {
+			WORLD.ENDFLAG = false;
+			WORLD.SHOWEND = true;
+		};
+
+		// keydown_quit = function() {
+
+		// }
 
 		var alertbox = new PIXI.Sprite(getTexture("alert"));
 		alertbox.anchor.x = 0.5;
@@ -298,6 +320,10 @@ body {
 		    for(i in onScreenObjects)
 		    	if(onScreenObjects[i].update)
 			    	onScreenObjects[i].update();
+            if(WORLD.AGENT.state.mood >= 0.9 && !WORLD.SHOWEND) {
+            	WORLD.ENDFLAG = true;
+            }
+
 		}
 		
 		// the animation step is called whenever the screen is supposed to draw
@@ -327,6 +353,8 @@ body {
 				}
 			}
 			
+			theend.visible = WORLD.ENDFLAG;
+
 		    // render the stage   
 		    renderer.render(stage);
 		}
