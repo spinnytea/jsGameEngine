@@ -361,9 +361,11 @@ body {
             if(WORLD.AGENT.state.mood >= 0.9 && !WORLD.SHOWEND) {
             	WORLD.ENDFLAG = true;
             }
-            if(getInGameTime()<0.25 || getInGameTime()>0.75 ) {
+            if(getInGameTime()<0.25 || getInGameTime()>0.85 ) {
             	WORLD.NIGHTFLAG = true;
             }
+            else
+            	WORLD.NIGHTFLAG = false;
 		}
 		
 		// the animation step is called whenever the screen is supposed to draw
